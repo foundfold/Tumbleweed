@@ -1,0 +1,84 @@
+# Tumbleweed MLM v1 — ABLATION at the same 300M scale as tumbleweed_v1.
+#
+# This is a CONTROL, not a headline. Same encoder, same data, MLM objective
+# instead of curriculum-contrastive. Two purposes:
+#   1. Defends against "is it the scale or the objective?" — same arch+data,
+#      different objective, so any gap is the objective.
+#   2. Unlocks the PLL bench against RaptScore's 0.65/0.78/0.65 (curriculum
+#      models have no MLM head so can't compute PLL).
+#
+# Training budget: 20k steps (~40% of v1's 50k) — keeps this an ablation, not a
+# budget-equal co-headline. MLM eval metrics stabilize fast in our 14M ablation
+# series; 20k at 300M is enough for a credible PLL number.
+
+run_id: tumbleweed_mlm_v1
+seed: 0
+
+data:
+  sources:
+    # All RaptScore SELEX rounds — log-count weighted to preserve enrichment
+    # (RaptScore-style — "keep duplicates" beats dedup per their Fig 1C sweep)
+    - {name: rapt_A_R1, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R1.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R2, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R2.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R3, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R3.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R4, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R4.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R5, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R5.parquet, class: r_late, weight: 1.5, weight_by_count: true}
+    - {name: rapt_A_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R6.parquet, class: r_late, weight: 2.0, weight_by_count: true}
+    - {name: rapt_B_R0, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R0.parquet, class: r_late, weight: 1.0}
+    - {name: rapt_B_R1, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R1.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R2, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R2.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R3, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R3.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R4, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R4.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R5, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R5.parquet, class: r_late, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R6.parquet, class: r_late, weight: 1.5, weight_by_count: true}
+    - {name: rapt_B_R7, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R7.parquet, class: r_late, weight: 2.0, weight_by_count: true}
+    - {name: rapt_C_R2, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R2.parquet, class: r_late, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R3, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R3.parquet, class: r_late, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R4, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R4.parquet, class: r_late, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R5, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R5.parquet, class: r_late, weight: 1.5, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R6.parquet, class: r_late, weight: 2.0, weight_by_count: true, target_protein: FGF9}
+    # RaptRanker SELEX
+    - {name: rapt_tg2,        parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/study.parquet,        class: r_late, weight: 1.0}
+    # General SELEX
+    - {name: jolma_all,       parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    class: r_late, weight: 1.0}
+    - {name: tier1_all,       parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            class: r_late, weight: 1.0}
+    - {name: htselex_pilot,   parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex/PRJEB28411/processed/study.parquet,              class: r_late, weight: 1.0}
+    # Curated binders
+    - {name: deepaptamer,     parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_combined.parquet,      sequence_col: aptamer_sequence_RNA, class: r_late, weight: 2.0}
+    - {name: utexas,          parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet,           sequence_col: aptamer_sequence_clean, class: r_late, weight: 3.0}
+
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits.parquet
+  max_len: 128
+  num_workers: 2
+  mask_prob: 0.15
+
+model:
+  d_model: 1024
+  nhead: 16
+  num_layers: 24
+  dim_ff: 4096
+  dropout: 0.1
+  grad_checkpoint: false   # A100 80GB has headroom
+
+training:
+  batch_size: 256
+  steps: 20000          # ablation budget — see header note
+  warmup_steps: 1000
+  lr: 1.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 2000     # 15 eval points across the run
+
+ckpt:
+  every_steps: 5000
+  keep_last: 4
+
+log:
+  every_steps: 100
+  to: stdout

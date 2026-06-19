@@ -1,0 +1,76 @@
+run_id: tumbleweed_60m_diffusion_v1_multifam
+seed: 0
+
+# Multi-family Tumbleweed-Hybrid full training.
+# 7 well-instrumented SELEX families across 5 distinct protein targets.
+# All RNA. Hand-curated targets verified to have ESM-2 embeddings cached.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638      # IL1RL1
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings.parquet
+  max_rows_per_family: 50000     # caps memory for multi-family on Mac
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  grad_checkpoint: false
+
+training:
+  batch_size: 32                # smaller for Mac MPS unified-memory headroom
+  steps: 15000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true                     # auto-disabled on MPS/CPU (handled in train script)
+  lam_diff: 0.5
+  ckpt_every: 2500

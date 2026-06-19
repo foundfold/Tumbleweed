@@ -1,0 +1,58 @@
+# Smoke-test config — small fast run to verify the full pipeline works end-to-end
+# before launching real training on Thunder. Trims:
+#   - 50 training steps (vs 200,000)
+#   - batch 32 (vs 512)
+#   - Eval every 25 steps
+#   - Single light source (RaptRanker TG2 R0 + late)
+# Should complete in <2 minutes on a Mac.
+
+run_id: smoke
+seed: 0
+
+data:
+  sources:
+    - {name: tg2_r0,    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet, round_filter: null, class: r0,     weight: 1.0}
+    - {name: tg2_late,  parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/study.parquet,    round_filter: null, class: r_late, weight: 1.0}
+    - {name: syn_lox1,  parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,   round_filter: null, class: r0,     weight: 0.5}
+    - {name: instructna_panel, parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_benchmark/processed/instructna_lox1_cxcl5_kd.parquet, round_filter: null, class: r_late, weight: 1.0}
+  eval_panel:
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_benchmark/processed/instructna_lox1_cxcl5_kd.parquet
+    sequence_col: sequence
+  max_len: 96
+  shuffle_buffer: 1000
+  num_workers: 0
+
+model:
+  d_model: 128
+  nhead: 4
+  num_layers: 4
+  dim_ff: 384
+  embed_dim: 64
+  dropout: 0.1
+  grad_checkpoint: false
+
+training:
+  batch_size: 32
+  steps: 50
+  warmup_steps: 5
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  tau: 0.2
+  amp: false
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 25
+  retrieval_panel: instructna_lox1_cxcl5
+
+ckpt:
+  every_steps: 50
+  keep_last: 1
+  resume_from: null
+
+log:
+  every_steps: 10
+  to: stdout

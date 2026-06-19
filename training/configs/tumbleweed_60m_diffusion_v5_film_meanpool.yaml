@@ -1,0 +1,80 @@
+run_id: tumbleweed_60m_diffusion_v5_film_meanpool
+
+# v5_film + MEAN-pooled (per-residue pipeline) ESM-2 conditioning bank (epitope test).
+# IDENTICAL to tumbleweed_60m_diffusion_v5_film EXCEPT the target embedding bank:
+# surface-restricted per-residue ESM-2 pool (build_epitope_conditioning_banks.py)
+# instead of whole-protein mean. Paired A/B vs ..._v5_film_meanpool (same per-residue
+# pipeline + same 62-target raw fallback + same centering, differing ONLY in the
+# pooling mask). Tests whether the probe's RNA surface lift (project_epitope_surface_
+# conditioning_rna: +0.18 LOO Kd, p=0.024) survives a real FiLM conditioner.
+# Local MPS run (no A100): code auto-selects mps, amp off (fp32).
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980
+    chemistry: RNA
+    r_max: 8
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371
+    chemistry: RNA
+    r_max: 6
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638
+    chemistry: RNA
+    r_max: 7
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371
+    chemistry: RNA
+    r_max: 7
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874
+    chemistry: RNA
+    r_max: 12
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608
+    chemistry: RNA
+    r_max: 12
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: /Users/m/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/target_protein_embeddings_mean_centered.parquet
+  winners_parquet: /Users/m/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 50
+  max_rows_per_family: 50000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  target_film: true
+  grad_checkpoint: false
+
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  mask_same_target: true
+  ckpt_every: 2500

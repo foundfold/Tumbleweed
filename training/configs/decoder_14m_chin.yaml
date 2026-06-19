@@ -1,0 +1,77 @@
+# Decoder training config — trains AptamerDecoder against frozen 14M chin encoder.
+# Used downstream for latent-BO generation (HC-HEBO in encoder embedding space → decode → sequence).
+#
+# Encoder ckpt is passed as --encoder-ckpt at launch.
+# Reuses the clean corpus sources to give the decoder coverage of all 22 conditioned targets,
+# emphasizing MECP2/SNCA (the GREEN-scorer targets we'll generate for).
+run_id: tumbleweed_decoder_14m_chin
+seed: 0
+model:
+  # encoder_d_model is set from the loaded encoder's config at runtime
+  d_model: 256
+  nhead: 4
+  num_layers: 2
+  dim_ff: 1024
+  max_len: 128
+  dropout: 0.1
+training:
+  batch_size: 256
+  steps: 8000
+  warmup_steps: 300
+  lr: 0.0003
+  betas: [0.9, 0.95]
+  weight_decay: 0.05
+  grad_clip: 1.0
+  amp: true
+ckpt:
+  every_steps: 2000
+  keep_last: 3
+log:
+  every_steps: 100
+data:
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 0
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits_v2.parquet
+  target_embeddings_parquet: /home/ubuntu/Tumbleweed/data_refs/target_protein_embeddings.parquet
+  sources:
+    # MECP2 and SNCA get extra weight — these are our generation targets
+    - {name: rapidselex_MECP2_R12, parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R12.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 3.0, round_frac: 1.0, target_protein: MECP2}
+    - {name: rapidselex_MECP2_R8,  parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R8.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 2.0, round_frac: 0.67, target_protein: MECP2}
+    - {name: alphasyn_S1_R15, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R15.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 3.0, round_frac: 1.0, target_protein: SNCA}
+    - {name: alphasyn_S2_R15, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R15.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 3.0, round_frac: 1.0, target_protein: SNCA}
+    - {name: alphasyn_S1_R14, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R14.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 2.0, round_frac: 0.93, target_protein: SNCA}
+    - {name: alphasyn_S2_R14, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R14.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 2.0, round_frac: 0.93, target_protein: SNCA}
+    # Cover other conditioned targets so decoder isn't MECP2/SNCA-only
+    - {name: rapt_A_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R6.parquet,
+       class: r_late, weight: 1.0, weight_by_count: false, round_frac: 1.0, target_protein: FGF9}
+    - {name: rapt_B_R7, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R7.parquet,
+       class: r_late, weight: 1.0, weight_by_count: false, round_frac: 1.0, target_protein: IL1RL1}
+    - {name: rapt_C_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R6.parquet,
+       class: r_late, weight: 1.0, weight_by_count: false, round_frac: 1.0, target_protein: FGF9}
+    - {name: rapt_tg2_r8, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet,
+       class: r_late, weight: 1.0, weight_by_count: false, round_frac: 1.0, target_protein: TGM2}
+    - {name: rapidselex_PARP1_R12, parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R12.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 1.5, round_frac: 1.0, target_protein: PARP1}
+    - {name: ultraselex_RT_B_rf1.00, parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf1.00.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 1.0, round_frac: 1.0, target_protein: HIV1_RT}
+    - {name: spark_PTK7, parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_PTK7.parquet,
+       sequence_col: sequence, count_col: count, weight_by_count: false,
+       class: r_late, weight: 1.0, round_frac: 1.0, target_protein: PTK7}
+    # Need at least one R0 source for the dataset wrapper to initialize
+    - {name: syn_r0_lox1, parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,
+       class: r0, weight: 0.1, round_frac: 0.0, target_protein: LOX1}

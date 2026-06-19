@@ -1,0 +1,98 @@
+# Tier-1 unlock: margin-rank classifier + InstructNA Kd-validated binders.
+# Same base as binding_clf_marginrank.yaml, plus:
+#   - r_late additions: InstructNA STRONG binders (Kd ≤ 100 nM) for LOX1 + CXCL5
+#   - r_mid additions:  InstructNA WEAK binders (no measurable Kd) as paired hard negs
+# This is the smallest possible Tier-1 unlock: 10 wet-lab-validated strong binders
+# + 30 weak hard negatives, gives the model real Kd-grounded supervision for
+# LOX1/CXCL5 (which it previously only encountered in zero-shot panel benchmark).
+run_id: binding_clf_14m_chin_marginrank_unlock
+seed: 0
+model:
+  d_hidden: 256
+  dropout: 0.1
+training:
+  batch_size: 256
+  steps: 4000
+  warmup_steps: 200
+  lr: 0.0005
+  betas: [0.9, 0.95]
+  weight_decay: 0.05
+  grad_clip: 1.0
+  amp: true
+  rank_margin: 0.3
+  rank_weight: 0.5
+log:
+  every_steps: 100
+data:
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 0
+  max_rows_per_source: 50000
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits_v2.parquet
+  target_embeddings_parquet: /home/ubuntu/Tumbleweed/data_refs/target_protein_embeddings.parquet
+  sources:
+    # ─── R_top (existing) ───────────────────────────────────────────────────
+    - {name: rapt_A_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R6.parquet,
+       class: r_late, weight: 1.0, round_frac: 1.0, target_protein: FGF9}
+    - {name: rapt_B_R7, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R7.parquet,
+       class: r_late, weight: 1.0, round_frac: 1.0, target_protein: IL1RL1}
+    - {name: rapt_C_R6, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R6.parquet,
+       class: r_late, weight: 1.0, round_frac: 1.0, target_protein: FGF9}
+    - {name: rapt_tg2_r8, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet,
+       class: r_late, weight: 1.0, round_frac: 1.0, target_protein: TGM2}
+    - {name: rapidselex_MECP2_R12, parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R12.parquet,
+       sequence_col: sequence, class: r_late, weight: 1.5, round_frac: 1.0, target_protein: MECP2}
+    - {name: rapidselex_PARP1_R12, parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R12.parquet,
+       sequence_col: sequence, class: r_late, weight: 1.5, round_frac: 1.0, target_protein: PARP1}
+    - {name: alphasyn_S1_R15, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R15.parquet,
+       sequence_col: sequence, class: r_late, weight: 1.5, round_frac: 1.0, target_protein: SNCA}
+    - {name: alphasyn_S2_R15, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R15.parquet,
+       sequence_col: sequence, class: r_late, weight: 1.5, round_frac: 1.0, target_protein: SNCA}
+    - {name: ultraselex_RT_B_rf1.00, parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf1.00.parquet,
+       sequence_col: sequence, class: r_late, weight: 1.0, round_frac: 1.0, target_protein: HIV1_RT}
+    - {name: spark_PTK7, parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_PTK7.parquet,
+       sequence_col: sequence, class: r_late, weight: 1.0, round_frac: 1.0, target_protein: PTK7}
+    - {name: deepaptamer_bcma, parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_BC-6.parquet,
+       sequence_col: aptamer_sequence_RNA, class: r_late, weight: 1.0, round_frac: 1.0, target_protein: BCMA}
+    - {name: deepaptamer_ctgf, parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_CT-20.parquet,
+       sequence_col: aptamer_sequence_RNA, class: r_late, weight: 1.0, round_frac: 1.0, target_protein: CTGF}
+    - {name: deepaptamer_dkk1, parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_DK-30.parquet,
+       sequence_col: aptamer_sequence_RNA, class: r_late, weight: 1.0, round_frac: 1.0, target_protein: DKK1}
+    - {name: tier1_eif4a, parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/per_study/PRJNA1221092.parquet,
+       sequence_col: sequence, round_filter: null, class: r_late, weight: 1.0, round_frac: 1.0, target_protein: eIF4A_Oryza_sativa}
+
+    # ─── R_top: InstructNA STRONG binders (Tier-1 unlock) ────────────────────
+    - {name: instructna_LOX1_strong, parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_unlock/processed/instructna_LOX1_strong.parquet,
+       sequence_col: sequence, class: r_late, weight: 3.0, round_frac: 1.0, target_protein: LOX1}
+    - {name: instructna_CXCL5_strong, parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_unlock/processed/instructna_CXCL5_strong.parquet,
+       sequence_col: sequence, class: r_late, weight: 3.0, round_frac: 1.0, target_protein: CXCL5}
+
+    # ─── R_mid hard negs (existing) ──────────────────────────────────────────
+    - {name: rapt_A_R4_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R4.parquet,
+       class: r_mid, weight: 1.0, round_frac: 0.67, target_protein: FGF9}
+    - {name: rapt_B_R5_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R5.parquet,
+       class: r_mid, weight: 1.0, round_frac: 0.71, target_protein: IL1RL1}
+    - {name: rapt_C_R4_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R4.parquet,
+       class: r_mid, weight: 1.0, round_frac: 0.67, target_protein: FGF9}
+    - {name: rapidselex_MECP2_R8_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R8.parquet,
+       sequence_col: sequence, class: r_mid, weight: 1.5, round_frac: 0.67, target_protein: MECP2}
+    - {name: rapidselex_PARP1_R8_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R8.parquet,
+       sequence_col: sequence, class: r_mid, weight: 1.5, round_frac: 0.67, target_protein: PARP1}
+    - {name: alphasyn_S1_R10_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R10.parquet,
+       sequence_col: sequence, class: r_mid, weight: 1.0, round_frac: 0.67, target_protein: SNCA}
+    - {name: alphasyn_S2_R10_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R10.parquet,
+       sequence_col: sequence, class: r_mid, weight: 1.0, round_frac: 0.67, target_protein: SNCA}
+    - {name: ultraselex_RT_rf0.70_mid, parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.70.parquet,
+       sequence_col: sequence, class: r_mid, weight: 1.0, round_frac: 0.70, target_protein: HIV1_RT}
+
+    # ─── R_mid: InstructNA WEAK binders (Tier-1 unlock paired hard negs) ─────
+    - {name: instructna_LOX1_weak, parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_unlock/processed/instructna_LOX1_weak.parquet,
+       sequence_col: sequence, class: r_mid, weight: 3.0, round_frac: 0.5, target_protein: LOX1}
+    - {name: instructna_CXCL5_weak, parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_unlock/processed/instructna_CXCL5_weak.parquet,
+       sequence_col: sequence, class: r_mid, weight: 3.0, round_frac: 0.5, target_protein: CXCL5}
+
+    # ─── R0 negatives ────────────────────────────────────────────────────────
+    - {name: syn_r0_lox1, parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,
+       class: r0, weight: 1.0, round_frac: 0.0, target_protein: LOX1}
+    - {name: syn_r0_cxcl5, parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_CXCL5/synthetic_r0.parquet,
+       class: r0, weight: 1.0, round_frac: 0.0, target_protein: CXCL5}

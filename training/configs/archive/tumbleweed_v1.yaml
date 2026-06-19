@@ -1,0 +1,126 @@
+# Tumbleweed v1 — primary paper-3 headline run.
+#
+# Method:  Curriculum hard-negative contrastive pretraining for aptamer FMs.
+# Goal:    Beat RaptScore (NAR 2026) Pearson r = 0.78 on Dataset B's 48 SPR-labeled
+#          sequences (their headline benchmark).
+# Size:    ~300M params (d=1024, 24L, 16h, ff=4096). Larger than RaptScore's 86M
+#          and AptaBERT's ~110M.
+# Corpus:  Combined RaptScore SELEX (DRA019577/9/10) + RaptRanker (PRJDB9110_TG2,
+#          PRJDB9111_aVb3) + Tier-1 + Jolma 2013 + DeepAptamer + UTexas curated +
+#          synthetic R0. Test-split exclusion includes the 171 RaptScore SPR
+#          eval sequences (no leakage; auto-applied via aptamer_splits.parquet).
+# Steps:   100k.  ~12 hr on a single L40 or ~8 hr on an A100 80GB.
+# Cost:    ~$11 (L40 @ $0.89/hr × 12 hr).
+#
+# Key choices vs RaptScore (NAR 2026):
+#   - From scratch (no DNABERT init) — mitigated by 3.5× their params + more data
+#   - 1-nt tokenization (not 3-mer) — modern standard, matches RNA-FM/RiNALMo
+#   - Curriculum-contrastive objective (not pooled MLM) — the novel contribution
+#   - log-count weighted sampling on enriched SELEX rounds — preserves the
+#     binding-activity signal that dedup destroys. RaptScore Fig 1C settings sweep
+#     showed keep-duplicates / log-weighted > remove-duplicates.
+
+run_id: tumbleweed_v1
+seed: 0
+
+curriculum:
+  enabled: true
+  phases:
+    # 50k-step schedule: 20% easy / 30% mid / 50% hard. 14M poorly extrapolates to
+    # 300M — bigger model has more capacity, may need more hard-phase steps to
+    # actually use it.
+    - {start_step: 0,     neg_tags: [easy_neg]}
+    - {start_step: 10000, neg_tags: [easy_neg, mid_neg]}
+    - {start_step: 25000, neg_tags: [mid_neg, hard_neg]}
+
+data:
+  sources:
+    # ─── EASY NEGATIVES — R0 / naive libraries (uniform-sampled, no enrichment) ───
+    - {name: jolma_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '== 0', class: r0, tag: easy_neg, weight: 1.0}
+    - {name: tier1_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '== 0', class: r0, tag: easy_neg, weight: 1.0}
+    - {name: rapt_tg2_r0,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet,    round_filter: null,    class: r0, tag: easy_neg, weight: 1.0}
+    - {name: rapt_B_R0,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R0.parquet,                  round_filter: null,    class: r0, tag: easy_neg, weight: 1.0}
+    - {name: syn_r0_lox1,     parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,        round_filter: null,    class: r0, tag: easy_neg, weight: 0.3}
+    - {name: syn_r0_cxcl5,    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_CXCL5/synthetic_r0.parquet,       round_filter: null,    class: r0, tag: easy_neg, weight: 0.3}
+
+    # ─── MID NEGATIVES — early/mid rounds, log-count weighted (preserve enrichment) ─
+    - {name: rapt_tg2_r2,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201863.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r3,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201864.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r4,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201865.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_A_R1,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R1.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R2,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R2.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R1,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R1.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R2,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R2.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R3,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R3.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_C_R2,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R2.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R3,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R3.parquet,                  class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+
+    # ─── HARD NEGATIVES — mid-late rounds, log-count weighted (high enrichment) ─────
+    - {name: rapt_tg2_r5,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201866.parquet,    round_filter: null,    class: r0, tag: hard_neg, weight: 1.0}
+    - {name: rapt_tg2_r6,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201867.parquet,    round_filter: null,    class: r0, tag: hard_neg, weight: 1.0}
+    - {name: rapt_A_R3,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R3.parquet,                  class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R4,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R4.parquet,                  class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R4,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R4.parquet,                  class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R5,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R5.parquet,                  class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_C_R4,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R4.parquet,                  class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R5,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R5.parquet,                  class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true, target_protein: FGF9}
+
+    # ─── POSITIVES — most-enriched late rounds + curated labeled binders ───────────
+    - {name: rapt_tg2_r7,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201868.parquet,    round_filter: null,    class: r_late, weight: 1.5}
+    - {name: rapt_tg2_r8,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet,    round_filter: null,    class: r_late, weight: 2.0}
+    - {name: rapt_A_R5,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R5.parquet,                  class: r_late, weight: 1.5, weight_by_count: true}
+    - {name: rapt_A_R6,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R6.parquet,                  class: r_late, weight: 2.0, weight_by_count: true}
+    - {name: rapt_B_R6,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R6.parquet,                  class: r_late, weight: 1.5, weight_by_count: true}
+    - {name: rapt_B_R7,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R7.parquet,                  class: r_late, weight: 2.0, weight_by_count: true}
+    - {name: rapt_C_R5,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R5.parquet,                  class: r_late, weight: 1.5, weight_by_count: true, target_protein: FGF9}
+    - {name: rapt_C_R6,       parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R6.parquet,                  class: r_late, weight: 2.0, weight_by_count: true, target_protein: FGF9}
+    - {name: jolma_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '>= 3',  class: r_late, weight: 1.0}
+    - {name: tier1_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '>= 1',  class: r_late, weight: 1.0}
+    - {name: deepaptamer,     parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_combined.parquet,      sequence_col: aptamer_sequence_RNA, round_filter: null, class: r_late, weight: 2.0}
+    - {name: utexas_strong,   parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet,           sequence_col: aptamer_sequence_clean, kd_filter_lt_nm: 1000, round_filter: null, class: r_late, weight: 3.0}
+
+  eval_panel:
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_benchmark/processed/instructna_lox1_cxcl5_kd.parquet
+    sequence_col: sequence
+
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits.parquet
+
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 2
+
+model:
+  d_model: 1024
+  nhead: 16
+  num_layers: 24
+  dim_ff: 4096
+  embed_dim: 256
+  dropout: 0.1
+  grad_checkpoint: false   # A100 80GB fits 300M at batch 384 max_len 128 without ckpt
+
+training:
+  batch_size: 256
+  steps: 50000            # 25k steps in hard phase — 14M poorly proxies for 300M dynamics
+  warmup_steps: 2000
+  lr: 1.0e-4              # lower than 14M's 3e-4; standard at 300M scale
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  tau: 0.1                # sharper InfoNCE temp at larger scale
+  amp: true               # bf16 if supported on the GPU (L40 / A100 both yes)
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 2000
+  retrieval_panel: instructna_lox1_cxcl5
+  metrics: [retrieval_R@1, retrieval_R@10, kd_spearman]
+
+ckpt:
+  every_steps: 5000
+  keep_last: 4
+  resume_from: null
+
+log:
+  every_steps: 100
+  to: stdout

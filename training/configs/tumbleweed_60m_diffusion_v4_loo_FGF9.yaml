@@ -1,0 +1,60 @@
+run_id: tumbleweed_60m_diffusion_v4_loo_FGF9
+seed: 0
+data:
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_centered.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 100
+  max_rows_per_family: 20000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980
+    chemistry: RNA
+    r_max: 8
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638
+    chemistry: RNA
+    r_max: 7
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874
+    chemistry: RNA
+    r_max: 12
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608
+    chemistry: RNA
+    r_max: 12
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840
+    chemistry: RNA
+    r_max: 15
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  grad_checkpoint: false
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 0.0003
+  weight_decay: 0.05
+  betas:
+  - 0.9
+  - 0.95
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  mask_same_target: true
+  ckpt_every: 2500

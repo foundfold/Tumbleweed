@@ -1,0 +1,80 @@
+# Contrastive pretraining config — production v1 (100k steps, ~6.5h on L40).
+# Fixed 2026-05-16: study.parquet for RaptRanker mixes all rounds (incl. R0), which
+# polluted the r_late pool with r0 reads → loss stuck at random. Now using
+# explicit per-round files only.
+
+run_id: tendril_aptamer_v1
+seed: 0
+
+data:
+  sources:
+    # ─── R0 / naive-library negatives ──────────────────────────────────
+    - {name: jolma_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '== 0', class: r0,     weight: 1.0}
+    - {name: tier1_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '== 0', class: r0,     weight: 1.0}
+    - {name: rapt_tg2_r0,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet,    round_filter: null,    class: r0,     weight: 1.0}
+    # Synthetic R0 — uniform random in primer templates, downweighted since
+    # lacks PCR/library biases of an empirical naive library
+    - {name: syn_r0_lox1,     parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,        round_filter: null,    class: r0,     weight: 0.3}
+    - {name: syn_r0_cxcl5,    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_CXCL5/synthetic_r0.parquet,       round_filter: null,    class: r0,     weight: 0.3}
+
+    # ─── Late-round / enriched positives ───────────────────────────────
+    - {name: jolma_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '>= 3',  class: r_late, weight: 1.0}
+    - {name: tier1_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '>= 1',  class: r_late, weight: 1.0}
+    # RaptRanker TG2 late rounds (R5-R8, R8 most enriched gets 2× weight)
+    - {name: rapt_tg2_r5,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201866.parquet,    round_filter: null,    class: r_late, weight: 1.0}
+    - {name: rapt_tg2_r6,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201867.parquet,    round_filter: null,    class: r_late, weight: 1.0}
+    - {name: rapt_tg2_r7,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201868.parquet,    round_filter: null,    class: r_late, weight: 1.5}
+    - {name: rapt_tg2_r8,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet,    round_filter: null,    class: r_late, weight: 2.0}
+    # RaptRanker αVβ3 rounds R3-R6 (no R0 in this study)
+    # Curated labeled binders — extra-weighted
+    - {name: deepaptamer,     parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_combined.parquet,      sequence_col: aptamer_sequence_RNA, round_filter: null, class: r_late, weight: 2.0}
+    - {name: utexas_strong,   parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet,           sequence_col: aptamer_sequence_clean, kd_filter_lt_nm: 1000, round_filter: null, class: r_late, weight: 3.0}
+
+  eval_panel:
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_benchmark/processed/instructna_lox1_cxcl5_kd.parquet
+    sequence_col: sequence
+
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits.parquet
+
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 2
+
+model:
+  d_model: 384
+  nhead: 6
+  num_layers: 8
+  dim_ff: 1536
+  embed_dim: 192
+  dropout: 0.1
+  grad_checkpoint: false
+
+training:
+  batch_size: 256
+  steps: 100000
+  warmup_steps: 2000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  tau: 0.2
+  amp: true
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 2000
+  retrieval_panel: instructna_lox1_cxcl5
+  metrics:
+    - retrieval_R@1
+    - retrieval_R@10
+    - kd_spearman
+
+ckpt:
+  every_steps: 10000
+  keep_last: 3
+  resume_from: null
+
+log:
+  every_steps: 100
+  to: stdout

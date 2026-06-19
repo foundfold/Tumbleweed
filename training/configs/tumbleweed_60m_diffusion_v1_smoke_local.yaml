@@ -1,0 +1,39 @@
+run_id: tumbleweed_60m_diffusion_v1_smoke_local
+seed: 0
+
+# Mac MPS smoke — minimal batch + step count, just confirms the architecture
+# trains correctly on Apple Silicon. Single SELEX family (rapt_tg2 / TGM2).
+# Total time target: ~3-5 min on M-series.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980
+    chemistry: RNA
+    r_max: 8
+  target_embeddings_parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/target_protein_embeddings.parquet
+  max_rows_per_family: 20000     # cap memory for Mac MPS + concurrent v19
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  grad_checkpoint: false
+
+training:
+  batch_size: 16              # small for Mac unified memory + v19 sharing GPU
+  steps: 200                   # smoke — just check losses decrease
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true                    # auto-disabled on MPS
+  lam_diff: 0.5
+  ckpt_every: 1000             # won't trigger in 200 steps; only final save

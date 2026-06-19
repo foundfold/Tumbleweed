@@ -1,0 +1,76 @@
+# Smoke test for the new count-weighted RaptScore-SELEX pipeline.
+# Tiny model, ~200 steps, runs on Mac MPS in ~3 min. Tests:
+#  - RaptScore parquets load
+#  - weight_by_count=true samples sequences ∝ log(count)+1
+#  - Curriculum still fires phase transitions correctly
+#  - PLL bench inline (skipped if no MLM head — this is contrastive)
+
+run_id: tumbleweed_smoke
+seed: 0
+
+curriculum:
+  enabled: true
+  phases:
+    - {start_step: 0,   neg_tags: [easy_neg]}
+    - {start_step: 75,  neg_tags: [easy_neg, mid_neg]}
+    - {start_step: 150, neg_tags: [mid_neg, hard_neg]}
+
+data:
+  sources:
+    # easy negs — uniform-sampled R0 / naive (no enrichment to preserve)
+    - {name: rapt_tg2_r0,    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet, round_filter: null, class: r0, tag: easy_neg, weight: 1.0}
+    - {name: syn_r0_lox1,    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,   round_filter: null, class: r0, tag: easy_neg, weight: 0.5}
+
+    # mid negs — RaptScore early-mid rounds (LOW enrichment but still weighted by count)
+    - {name: rapt_A_R1,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R1.parquet, class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_A_R2,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R2.parquet, class: r0, tag: mid_neg, weight: 1.0, weight_by_count: true}
+
+    # hard negs — RaptScore mid-late rounds
+    - {name: rapt_A_R4,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R4.parquet, class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true}
+    - {name: rapt_B_R5,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R5.parquet, class: r0, tag: hard_neg, weight: 1.0, weight_by_count: true}
+
+    # positives — most-enriched late rounds (weighted by count — preserves binder selection)
+    - {name: rapt_A_R6,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R6.parquet, class: r_late, weight: 1.5, weight_by_count: true}
+    - {name: rapt_B_R7,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R7.parquet, class: r_late, weight: 1.5, weight_by_count: true}
+    - {name: rapt_C_R6,      parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R6.parquet, class: r_late, weight: 1.5, weight_by_count: true, target_protein: FGF9}
+    # curated labeled binders (no count column; unweighted)
+    - {name: utexas_strong,  parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet, sequence_col: aptamer_sequence_clean, kd_filter_lt_nm: 1000, class: r_late, weight: 2.0}
+
+  test_exclusion_parquet: /Users/m/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/aptamer_splits.parquet
+  max_len: 128
+  shuffle_buffer: 5000
+  num_workers: 0
+
+model:
+  d_model: 192
+  nhead: 6
+  num_layers: 4
+  dim_ff: 768
+  embed_dim: 96
+  dropout: 0.1
+  grad_checkpoint: false
+
+training:
+  batch_size: 64
+  steps: 200
+  warmup_steps: 50
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  tau: 0.2
+  amp: false
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 200
+  metrics: [retrieval_R@1, retrieval_R@10, kd_spearman]
+
+ckpt:
+  every_steps: 200
+  keep_last: 1
+
+log:
+  every_steps: 20
+  to: stdout

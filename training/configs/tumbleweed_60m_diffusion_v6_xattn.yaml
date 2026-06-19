@@ -1,0 +1,98 @@
+run_id: tumbleweed_60m_diffusion_v6_xattn
+seed: 0
+
+# v6 = per-residue target CROSS-ATTENTION injected into the denoiser trunk (task #96 follow-up).
+# Unifies the two things that each half-worked:
+#   - v4's PER-RESIDUE ESM-2 bank (P,1280) → epitope resolution (failed only because attn-POOLING
+#     collapsed it to one vector the denoiser still ignored), and
+#   - v5_film's IN-DENOISER injection → forces the denoise gradient through the target pathway.
+# Mechanism: each transformer layer runs a cross-attention block where the SEQUENCE tokens (queries)
+# attend to the protein's per-residue ESM-2 (K,V projected to d_model), zero-init gated → residual-safe
+# no-op at start (verified max|Δlogits|=0). +19.9M params (60.9M → 80.8M). Inspired by the AR→Diffusion
+# KV-injection in NVIDIA Cosmos: inject context as K,V into every diffusion-branch attention block
+# rather than as a single prepended token. Richer than FiLM (per-position epitope attention vs per-layer
+# affine scaling) and richer than attn-pool (no collapse). The prepend token is KEPT (use_target_token
+# =true) because the v5b film-only ablation showed the token is what enables ZERO-SHOT generalization.
+#
+# Clean comparison vs v4_epitope: SAME RAW per-residue bank, SAME data balance — the ONLY change is
+# cross-attn injection in place of attention-pool. So a v6>v4 win isolates "inject per-residue into the
+# trunk" from "collapse per-residue to one vector". Caveat vs v5_film: v6 uses the RAW per-residue bank
+# (no centered per-residue bank exists), so the prepend-token vector is anisotropic — if v6 underperforms
+# v5_film, a centered per-residue bank is the follow-up. Held-out LOX1/CXCL5 still NOT in the pool.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638      # IL1RL1
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Desktop/autoRNA_data/tumbleweed/data_refs/target_protein_embeddings_per_residue.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 50
+  max_rows_per_family: 50000
+  max_protein_residues: 1000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true        # KEPT: v5b showed the prepend token enables zero-shot generalization
+  target_xattn: true            # NEW: per-layer seq→per-residue-target cross-attention into the trunk
+  grad_checkpoint: false
+
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  mask_same_target: true
+  ckpt_every: 2500

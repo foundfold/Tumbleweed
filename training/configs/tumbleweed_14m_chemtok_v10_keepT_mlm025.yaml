@@ -1,0 +1,2576 @@
+run_id: tumbleweed_14m_chemtok_v10_keepT_mlm025
+seed: 0
+curriculum:
+  enabled: true
+  phases:
+  - start_step: 0
+    pos_frac:
+    - 0.8
+    - 1.0
+    neg_frac:
+    - 0.0
+    - 0.2
+  - start_step: 1250
+    pos_frac:
+    - 0.8
+    - 1.0
+    neg_frac:
+    - 0.2
+    - 0.45
+  - start_step: 2500
+    pos_frac:
+    - 0.8
+    - 1.0
+    neg_frac:
+    - 0.4
+    - 0.65
+  - start_step: 3750
+    pos_frac:
+    - 0.9
+    - 1.0
+    neg_frac:
+    - 0.55
+    - 0.75
+data:
+  sources:
+  - name: jolma_r0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet
+    round_filter: == 0
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: RNA
+    library_id: jolma_r0
+  - name: tier1_r0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_unconditioned_r0.parquet
+    round_filter: null
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: RNA
+    library_id: tier1_r0
+  - name: rapt_tg2_r0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet
+    round_filter: null
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r0
+  - name: rapt_B_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R0.parquet
+    round_filter: null
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R0
+  - name: syn_r0_lox1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet
+    round_filter: null
+    class: r0
+    weight: 0.3
+    round_frac: 0.0
+    target_protein: LOX1
+    chemistry: RNA
+    library_id: syn_r0_lox1
+  - name: syn_r0_cxcl5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_CXCL5/synthetic_r0.parquet
+    round_filter: null
+    class: r0
+    weight: 0.3
+    round_frac: 0.0
+    target_protein: CXCL5
+    chemistry: RNA
+    library_id: syn_r0_cxcl5
+  - name: rapt_A_R1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R1.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.17
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_A_R1
+  - name: rapt_A_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R2.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.33
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_A_R2
+  - name: rapt_A_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R3.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.5
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_A_R3
+  - name: rapt_A_R4
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R4.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.67
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_A_R4
+  - name: rapt_A_R5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R5.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    round_frac: 0.83
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_A_R5
+  - name: rapt_A_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R6.parquet
+    class: r_late
+    weight: 2.0
+    weight_by_count: true
+    round_frac: 1.0
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_A_R6
+  - name: rapt_B_R1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R1.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.14
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R1
+  - name: rapt_B_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R2.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.29
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R2
+  - name: rapt_B_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R3.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.43
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R3
+  - name: rapt_B_R4
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R4.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.57
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R4
+  - name: rapt_B_R5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R5.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.71
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R5
+  - name: rapt_B_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R6.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    round_frac: 0.86
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R6
+  - name: rapt_B_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R7.parquet
+    class: r_late
+    weight: 2.0
+    weight_by_count: true
+    round_frac: 1.0
+    target_protein: IL1RL1
+    chemistry: RNA
+    library_id: rapt_B_R7
+  - name: rapt_C_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R2.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.33
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_C_R2
+  - name: rapt_C_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R3.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.5
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_C_R3
+  - name: rapt_C_R4
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R4.parquet
+    class: r0
+    weight: 1.0
+    weight_by_count: true
+    round_frac: 0.67
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_C_R4
+  - name: rapt_C_R5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R5.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    round_frac: 0.83
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_C_R5
+  - name: rapt_C_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R6.parquet
+    class: r_late
+    weight: 2.0
+    weight_by_count: true
+    round_frac: 1.0
+    target_protein: FGF9
+    chemistry: RNA
+    library_id: rapt_C_R6
+  - name: rapt_tg2_r2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201863.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.25
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r2
+  - name: rapt_tg2_r3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201864.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.38
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r3
+  - name: rapt_tg2_r4
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201865.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.5
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r4
+  - name: rapt_tg2_r5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201866.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.63
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r5
+  - name: rapt_tg2_r6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201867.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.75
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r6
+  - name: rapt_tg2_r7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201868.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.88
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r7
+  - name: rapt_tg2_r8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    target_protein: TGM2
+    chemistry: RNA
+    library_id: rapt_tg2_r8
+  - name: spark_PTK7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_PTK7.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    count_col: count
+    family_weighted: true
+    family_col: motif_family
+    family_weight_power: 0.5
+    round_frac: 1.0
+    target_protein: PTK7
+    chemistry: RNA
+    library_id: spark_PTK7
+  - name: spark_NRP1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_NRP1.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    count_col: count
+    family_weighted: true
+    family_col: motif_family
+    family_weight_power: 0.5
+    round_frac: 1.0
+    target_protein: NRP1
+    chemistry: RNA
+    library_id: spark_NRP1
+  - name: spark_CDCP1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_CDCP1.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    count_col: count
+    family_weighted: true
+    family_col: motif_family
+    family_weight_power: 0.5
+    round_frac: 1.0
+    target_protein: CDCP1
+    chemistry: RNA
+    library_id: spark_CDCP1
+  - name: spark_ITGA3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_ITGA3.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    count_col: count
+    family_weighted: true
+    family_col: motif_family
+    family_weight_power: 0.5
+    round_frac: 1.0
+    target_protein: ITGA3
+    chemistry: RNA
+    library_id: spark_ITGA3
+  - name: spark_PTPRD
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/sparkseq/processed/sparkseq_train_PTPRD_F_S.parquet
+    class: r_late
+    weight: 1.5
+    weight_by_count: true
+    count_col: count
+    family_weighted: true
+    family_col: motif_family
+    family_weight_power: 0.5
+    round_frac: 1.0
+    target_protein: PTPRD_F_S
+    chemistry: RNA
+    library_id: spark_PTPRD
+  - name: jolma_late
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet
+    round_filter: '>= 3'
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    chemistry: RNA
+    library_id: jolma_late
+  - name: deepaptamer_bcma
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_BC-6.parquet
+    sequence_col: aptamer_sequence_RNA
+    round_filter: null
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    target_protein: BCMA
+    chemistry: RNA
+    library_id: deepaptamer_bcma
+  - name: deepaptamer_ctgf
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_CT-20.parquet
+    sequence_col: aptamer_sequence_RNA
+    round_filter: null
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    target_protein: CTGF
+    chemistry: RNA
+    library_id: deepaptamer_ctgf
+  - name: deepaptamer_dkk1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_DK-30.parquet
+    sequence_col: aptamer_sequence_RNA
+    round_filter: null
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    target_protein: DKK1
+    chemistry: RNA
+    library_id: deepaptamer_dkk1
+  - name: tier1_anxa2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/per_study/PRJEB22637.parquet
+    round_filter: '>= 1'
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: ANXA2
+    chemistry: RNA
+    library_id: tier1_anxa2
+  - name: tier1_rpoa
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/per_study/PRJNA385825.parquet
+    round_filter: null
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: RpoA
+    chemistry: RNA
+    library_id: tier1_rpoa
+  - name: tier1_f13a1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/per_study/PRJNA688234.parquet
+    round_filter: null
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: F13A1
+    chemistry: RNA
+    library_id: tier1_f13a1
+  - name: tier1_ndm1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/per_study/PRJNA830749.parquet
+    round_filter: null
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: NDM_1
+    chemistry: RNA
+    library_id: tier1_ndm1
+  - name: tier1_eif4a
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/per_study/PRJNA1221092.parquet
+    round_filter: null
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: eIF4A_Oryza_sativa
+    chemistry: RNA
+    library_id: tier1_eif4a
+  - name: rapidselex_MECP2_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R12.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    target_protein: MECP2
+    chemistry: RNA
+    library_id: rapidselex_MECP2_R12
+  - name: rapidselex_MECP2_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R3.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.25
+    target_protein: MECP2
+    chemistry: RNA
+    library_id: rapidselex_MECP2_R3
+  - name: rapidselex_MECP2_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R8.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6667
+    target_protein: MECP2
+    chemistry: RNA
+    library_id: rapidselex_MECP2_R8
+  - name: rapidselex_PARP1_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R12.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    target_protein: PARP1
+    chemistry: RNA
+    library_id: rapidselex_PARP1_R12
+  - name: rapidselex_PARP1_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R3.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.25
+    target_protein: PARP1
+    chemistry: RNA
+    library_id: rapidselex_PARP1_R3
+  - name: rapidselex_PARP1_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R8.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6667
+    target_protein: PARP1
+    chemistry: RNA
+    library_id: rapidselex_PARP1_R8
+  - name: alphasyn_S1_R01
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R01.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.0667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R01
+  - name: alphasyn_S1_R03
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R03.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.2
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R03
+  - name: alphasyn_S1_R04
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R04.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.2667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R04
+  - name: alphasyn_S1_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R05.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.3333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R05
+  - name: alphasyn_S1_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R06.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.4
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R06
+  - name: alphasyn_S1_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R07.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.4667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R07
+  - name: alphasyn_S1_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R08.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.5333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R08
+  - name: alphasyn_S1_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R09.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R09
+  - name: alphasyn_S1_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R10.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R10
+  - name: alphasyn_S1_R11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R11.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.7333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R11
+  - name: alphasyn_S1_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R12.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R12
+  - name: alphasyn_S1_R13
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R13.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R13
+  - name: alphasyn_S1_R14
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R14.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.9333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R14
+  - name: alphasyn_S1_R15
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R15.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S1_R15
+  - name: alphasyn_S2_R03
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R03.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.2
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R03
+  - name: alphasyn_S2_R04
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R04.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.2667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R04
+  - name: alphasyn_S2_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R05.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.3333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R05
+  - name: alphasyn_S2_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R06.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.4
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R06
+  - name: alphasyn_S2_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R07.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.4667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R07
+  - name: alphasyn_S2_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R08.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.5333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R08
+  - name: alphasyn_S2_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R09.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R09
+  - name: alphasyn_S2_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R10.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R10
+  - name: alphasyn_S2_R11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R11.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.7333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R11
+  - name: alphasyn_S2_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R12.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R12
+  - name: alphasyn_S2_R13
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R13.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8667
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R13
+  - name: alphasyn_S2_R14
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R14.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.9333
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R14
+  - name: alphasyn_S2_R15
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S2_R15.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    target_protein: SNCA
+    chemistry: RNA
+    library_id: alphasyn_S2_R15
+  - name: ultraselex_RT_B_rf0.10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.10.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.1
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.10
+  - name: ultraselex_RT_B_rf0.20
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.20.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.2
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.20
+  - name: ultraselex_RT_B_rf0.30
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.30.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.3
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.30
+  - name: ultraselex_RT_B_rf0.40
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.40.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.4
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.40
+  - name: ultraselex_RT_B_rf0.50
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.50.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.5
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.50
+  - name: ultraselex_RT_B_rf0.60
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.60.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.60
+  - name: ultraselex_RT_B_rf0.70
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.70.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.7
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.70
+  - name: ultraselex_RT_B_rf0.80
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.80.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.80
+  - name: ultraselex_RT_B_rf0.90
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf0.90.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: true
+    class: r_late
+    weight: 1.5
+    round_frac: 0.9
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf0.90
+  - name: ultraselex_RT_B_rf1.00
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_RT_B_rf1.00.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: true
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    target_protein: HIV1_RT
+    chemistry: RNA
+    library_id: ultraselex_RT_B_rf1.00
+  - name: ultraselex_SiR_B_rf0.10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.10.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.1
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.10
+  - name: ultraselex_SiR_B_rf0.20
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.20.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.2
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.20
+  - name: ultraselex_SiR_B_rf0.30
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.30.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.3
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.30
+  - name: ultraselex_SiR_B_rf0.40
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.40.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.4
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.40
+  - name: ultraselex_SiR_B_rf0.50
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.50.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.5
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.50
+  - name: ultraselex_SiR_B_rf0.60
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.60.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.6
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.60
+  - name: ultraselex_SiR_B_rf0.70
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.70.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r0
+    weight: 1.0
+    round_frac: 0.7
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.70
+  - name: ultraselex_SiR_B_rf0.80
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.80.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: false
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.80
+  - name: ultraselex_SiR_B_rf0.90
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf0.90.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: true
+    class: r_late
+    weight: 1.5
+    round_frac: 0.9
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf0.90
+  - name: ultraselex_SiR_B_rf1.00
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/ultraselex/processed/ultraselex_SiR_B_rf1.00.parquet
+    sequence_col: sequence
+    count_col: count
+    weight_by_count: true
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: RNA
+    library_id: ultraselex_SiR_B_rf1.00
+  - name: htsx_PRJNA615076_R00
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R00.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R02
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R02.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.16666666666666666
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R03
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R03.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.25
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R04
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R04.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.3333333333333333
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R05.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.4166666666666667
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R06.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R07.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R08.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R09.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R10.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA615076_R11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA615076/processed/PRJNA615076_R11.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA615076
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_R0.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S1_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S1_R2.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S1_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S1_R6.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S1_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S1_R7.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S1_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S1_R8.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S1_R9N
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S1_R9N.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S1_R9T
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S1_R9T.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S2_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S2_R2.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S2_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S2_R6.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S2_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S2_R7.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S2_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S2_R8.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S2_R9N
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S2_R9N.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S2_R9T
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S2_R9T.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R1.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R2.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R3.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R4
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R4.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R5.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R6.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R7.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R8.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R9
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R9.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R9N
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R9N.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1064871_S3_R9T
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1064871/processed/PRJNA1064871_S3_R9T.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1064871
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R04
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R04.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.3333333333333333
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R05.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.4166666666666667
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R06.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R07.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R08.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R09.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R10.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R11.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_R12.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_Rc09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_Rc09.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_Rc11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_Rc11.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB62495_Rc12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJEB62495/processed/PRJEB62495_Rc12.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB62495
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_Init_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_Init_R12.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_P1_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_P1_R0.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_P1_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_P1_R10.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_P1_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_P1_R6.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_P2_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_P2_R0.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_P2_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_P2_R10.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_APX_P2_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_APX_P2_R6.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_HM_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_HM_R0.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_HM_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_HM_R10.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA1188194_HM_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_pulled/PRJNA1188194/processed/PRJNA1188194_HM_R7.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA1188194
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA935703_unknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA935703/processed/PRJNA935703_unknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJNA935703
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA932049_r_late
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA932049/processed/PRJNA932049_r_late.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: RNA
+    library_id: PRJNA932049
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R00
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R00.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R01
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R01.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.08333333333333333
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R03
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R03.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.25
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R05.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 0.4166666666666667
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R06.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R07.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R08.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA321551_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA321551/processed/PRJNA321551_R09.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: CCR7
+    chemistry: RNA
+    library_id: PRJNA321551
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJNA558191_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA558191/processed/PRJNA558191_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: RNA
+    library_id: PRJNA558191
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB19098_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB19098/processed/PRJDB19098_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: FGF9
+    chemistry: DNA
+    library_id: PRJDB19098
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB19138_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB19138/processed/PRJDB19138_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: FGF9
+    chemistry: DNA
+    library_id: PRJDB19138
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB19137_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB19137/processed/PRJDB19137_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: IL1RL1
+    chemistry: DNA
+    library_id: PRJDB19137
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB19139_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB19139/processed/PRJDB19139_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJDB19139
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB19140_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB19140/processed/PRJDB19140_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJDB19140
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB19141_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB19141/processed/PRJDB19141_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJDB19141
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB40016_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB40016/processed/PRJDB40016_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: SARS_CoV2_spike
+    chemistry: DNA
+    library_id: PRJDB40016
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJDB40017_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJDB40017/processed/PRJDB40017_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJDB40017
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB28411_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB28411/processed/PRJEB28411_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB28411
+    weight_by_count: true
+    count_col: count
+  - name: htsx_PRJEB28303_Runknown
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB28303/processed/PRJEB28303_Runknown.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: PRJEB28303
+    weight_by_count: true
+    count_col: count
+  - name: dna_panel_afp_dong2015_ap273
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/afp_dong2015_ap273.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: AFP
+    chemistry: DNA
+    library_id: afp_dong2015_ap273
+    weight_by_count: false
+  - name: dna_panel_aml_sefah2009
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/aml_sefah2009.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: aml_sefah2009
+    weight_by_count: false
+  - name: dna_panel_ampicillin_song2012
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/ampicillin_song2012.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ampicillin_song2012
+    weight_by_count: false
+  - name: dna_panel_cd20_haghighi2018
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/cd20_haghighi2018.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: MS4A1
+    chemistry: DNA
+    library_id: cd20_haghighi2018
+    weight_by_count: false
+  - name: dna_panel_cea_li2022
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/cea_li2022.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: CEA
+    chemistry: DNA
+    library_id: cea_li2022
+    weight_by_count: false
+  - name: dna_panel_egfrviii_tan2013
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/egfrviii_tan2013.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: EGFRvIII
+    chemistry: DNA
+    library_id: egfrviii_tan2013
+    weight_by_count: false
+  - name: dna_panel_fumonisin_mckeague2010
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/fumonisin_mckeague2010.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: fumonisin_mckeague2010
+    weight_by_count: false
+  - name: dna_panel_gbm_kang2012
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/gbm_kang2012.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: gbm_kang2012
+    weight_by_count: false
+  - name: dna_panel_gtx_lu2020
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/gtx_lu2020.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: gtx_lu2020
+    weight_by_count: false
+  - name: dna_panel_hepg2_jhit_zhang2015
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/hepg2_jhit_zhang2015.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: hepg2_jhit_zhang2015
+    weight_by_count: false
+  - name: dna_panel_her2_liu2012_hb5
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/her2_liu2012_hb5.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: HER2
+    chemistry: DNA
+    library_id: her2_liu2012_hb5
+    weight_by_count: false
+  - name: dna_panel_ifng_liu2014
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/ifng_liu2014.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: IFNG
+    chemistry: DNA
+    library_id: ifng_liu2014
+    weight_by_count: false
+  - name: dna_panel_ige_wiegand1996_d17
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/ige_wiegand1996_d17.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: IgE
+    chemistry: DNA
+    library_id: ige_wiegand1996_d17
+    weight_by_count: false
+  - name: dna_panel_lung_jimenez2012
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/lung_jimenez2012.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: lung_jimenez2012
+    weight_by_count: false
+  - name: dna_panel_lysozyme_tran2010
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/lysozyme_tran2010.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: LYZ_chicken
+    chemistry: DNA
+    library_id: lysozyme_tran2010
+    weight_by_count: false
+  - name: dna_panel_muc1_hu2012_ma3
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/muc1_hu2012_ma3.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: MUC1
+    chemistry: DNA
+    library_id: muc1_hu2012_ma3
+    weight_by_count: false
+  - name: dna_panel_norovirus_vlp_moore2025
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/norovirus_vlp_moore2025.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: Norovirus_VP1_GII4
+    chemistry: DNA
+    library_id: norovirus_vlp_moore2025
+    weight_by_count: false
+  - name: dna_panel_nucleolin_as1411_bates2009
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/nucleolin_as1411_bates2009.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: Nucleolin
+    chemistry: DNA
+    library_id: nucleolin_as1411_bates2009
+    weight_by_count: false
+  - name: dna_panel_ota_mckeague2014
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/ota_mckeague2014.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ota_mckeague2014
+    weight_by_count: false
+  - name: dna_panel_ptk7_shangguan2008_sgc8
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/ptk7_shangguan2008_sgc8.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: PTK7
+    chemistry: DNA
+    library_id: ptk7_shangguan2008_sgc8
+    weight_by_count: false
+  - name: dna_panel_ribocentre_dna_kd
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/ribocentre_dna_kd.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: NTSR1
+    chemistry: DNA
+    library_id: ribocentre_dna_kd
+    weight_by_count: false
+  - name: dna_panel_sea_oliveira2024
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/sea_oliveira2024.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: SEA_Saureus
+    chemistry: DNA
+    library_id: sea_oliveira2024
+    weight_by_count: false
+  - name: dna_panel_td05_mallikaratchy2011
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/td05_mallikaratchy2011.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: IgM
+    chemistry: DNA
+    library_id: td05_mallikaratchy2011
+    weight_by_count: false
+  - name: dna_panel_tenc_hicke2003
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/tenc_hicke2003.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: TNC
+    chemistry: DNA
+    library_id: tenc_hicke2003
+    weight_by_count: false
+  - name: dna_panel_thrombin_classics_hd1_hd22_nu172
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/thrombin_classics_hd1_hd22_nu172.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: thrombin_F2
+    chemistry: DNA
+    library_id: thrombin_classics_hd1_hd22_nu172
+    weight_by_count: false
+  - name: dna_panel_thrombin_dolinnaya2017_8brg
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/thrombin_dolinnaya2017_8brg.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: thrombin_F2
+    chemistry: DNA
+    library_id: thrombin_dolinnaya2017_8brg
+    weight_by_count: false
+  - name: dna_panel_thrombin_pasternak2011_una
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/thrombin_pasternak2011_una.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: thrombin_F2
+    chemistry: DNA
+    library_id: thrombin_pasternak2011_una
+    weight_by_count: false
+  - name: dna_panel_thrombin_zavyalova2019_mace
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/thrombin_zavyalova2019_mace.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: thrombin_F2
+    chemistry: DNA
+    library_id: thrombin_zavyalova2019_mace
+    weight_by_count: false
+  - name: dna_panel_tnbc_camorani2021
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/tnbc_camorani2021.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: null
+    chemistry: DNA
+    library_id: tnbc_camorani2021
+    weight_by_count: false
+  - name: dna_panel_tnfa_orava2019
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/tnfa_orava2019.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: TNF
+    chemistry: DNA
+    library_id: tnfa_orava2019
+    weight_by_count: false
+  - name: dna_panel_vegf_kaur2012_dna
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/vegf_kaur2012_dna.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: VEGF
+    chemistry: DNA
+    library_id: vegf_kaur2012_dna
+    weight_by_count: false
+  - name: dna_panel_vimentin_zamay2014
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/vimentin_zamay2014.parquet
+    sequence_col: sequence
+    class: r_late
+    weight: 1.0
+    round_frac: 1.0
+    target_protein: VIM
+    chemistry: DNA
+    library_id: vimentin_zamay2014
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_aml_sefah2009
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_aml_sefah2009.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: aml_sefah2009
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_ampicillin_song2012
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ampicillin_song2012.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ampicillin_song2012
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_cd20_haghighi2018
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_cd20_haghighi2018.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: cd20_haghighi2018
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_cea_li2022
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_cea_li2022.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: cea_li2022
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_egfrviii_tan2013
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_egfrviii_tan2013.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: egfrviii_tan2013
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_fumonisin_mckeague2010
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_fumonisin_mckeague2010.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: fumonisin_mckeague2010
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_gbm_kang2012
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_gbm_kang2012.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: gbm_kang2012
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_gtx_lu2020
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_gtx_lu2020.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: gtx_lu2020
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_hepg2_jhit_zhang2015
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_hepg2_jhit_zhang2015.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: hepg2_jhit_zhang2015
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_her2_liu2012_hb5
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_her2_liu2012_hb5.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: her2_liu2012_hb5
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_ifng_liu2014
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ifng_liu2014.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ifng_liu2014
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_ige_wiegand1996_d17
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ige_wiegand1996_d17.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ige_wiegand1996_d17
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_lung_jimenez2012
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_lung_jimenez2012.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: lung_jimenez2012
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_lysozyme_tran2010
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_lysozyme_tran2010.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: lysozyme_tran2010
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_muc1_hu2012_ma3
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_muc1_hu2012_ma3.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: muc1_hu2012_ma3
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_norovirus_vlp_moore2025
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_norovirus_vlp_moore2025.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: norovirus_vlp_moore2025
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_nucleolin_as1411_bates2009
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_nucleolin_as1411_bates2009.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: nucleolin_as1411_bates2009
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_ota_mckeague2014
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ota_mckeague2014.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ota_mckeague2014
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_ptk7_shangguan2008_sgc8
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ptk7_shangguan2008_sgc8.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ptk7_shangguan2008_sgc8
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_ribocentre_dna_kd
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ribocentre_dna_kd.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: ribocentre_dna_kd
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_sea_oliveira2024
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_sea_oliveira2024.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: sea_oliveira2024
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_td05_mallikaratchy2011
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_td05_mallikaratchy2011.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: td05_mallikaratchy2011
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_tenc_hicke2003
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tenc_hicke2003.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: tenc_hicke2003
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_thrombin_classics_hd1_hd22_nu172
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_classics_hd1_hd22_nu172.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: thrombin_classics_hd1_hd22_nu172
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_thrombin_dolinnaya2017_8brg
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_dolinnaya2017_8brg.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: thrombin_dolinnaya2017_8brg
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_thrombin_pasternak2011_una
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_pasternak2011_una.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: thrombin_pasternak2011_una
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_thrombin_zavyalova2019_mace
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_zavyalova2019_mace.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: thrombin_zavyalova2019_mace
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_tnbc_camorani2021
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tnbc_camorani2021.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: tnbc_camorani2021
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_tnfa_orava2019
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tnfa_orava2019.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: tnfa_orava2019
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_vegf_kaur2012_dna
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_vegf_kaur2012_dna.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: vegf_kaur2012_dna
+    weight_by_count: false
+  - name: dna_synr0_synthetic_r0_vimentin_zamay2014
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_vimentin_zamay2014.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: vimentin_zamay2014
+    weight_by_count: false
+  - name: generic_dna_r0
+    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/generic_dna_r0_from_PRJNA615076.parquet
+    sequence_col: sequence
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    target_protein: null
+    chemistry: DNA
+    library_id: generic_dna_r0
+    weight_by_count: false
+  eval_panel:
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_benchmark/processed/instructna_lox1_cxcl5_kd.parquet
+    sequence_col: sequence
+  target_embeddings_parquet: /home/ubuntu/Tumbleweed/data_refs/target_protein_embeddings.parquet
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits_v2.parquet
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 0
+model:
+  target_cond_mode: context_token
+  target_embed_dim: 1280
+  d_model: 384
+  nhead: 6
+  num_layers: 8
+  dim_ff: 1536
+  embed_dim: 192
+  dropout: 0.1
+  grad_checkpoint: false
+  regression_head: true
+  pool: cls
+  mlm_head: true
+training:
+  batch_size: 128
+  steps: 25000
+  warmup_steps: 200
+  lr: 0.0003
+  weight_decay: 0.05
+  betas:
+  - 0.9
+  - 0.95
+  grad_clip: 1.0
+  tau: 0.2
+  amp: true
+  reg_loss_weight: 0.5
+  ddp: auto
+  compile: false
+  mlm_weight: 0.25
+  mlm_mask_ratio: 0.15
+eval:
+  every_steps: 1000
+  retrieval_panel: instructna_lox1_cxcl5
+  metrics:
+  - retrieval_R@1
+  - retrieval_R@10
+  - kd_spearman
+ckpt:
+  every_steps: 2500
+  keep_last: 2
+  resume_from: null
+log:
+  every_steps: 50
+  to: stdout

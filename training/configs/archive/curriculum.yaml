@@ -1,0 +1,102 @@
+# Curriculum hard-negative contrastive — Paper-3 differentiator vs RaptScore/InstructNA.
+#
+# Phase 1 (0-20k):    easy negatives    R0 / naive library only           (baseline)
+# Phase 2 (20-50k):   medium negatives  R0 + TG2 R2/R3/R4                 (ramp)
+# Phase 3 (50-100k):  hard negatives    TG2 R5/R6 (only) — closest to R8  (push)
+#
+# Positives constant across phases: TG2 R7+R8 (most enriched) + curated binders
+# (deepaptamer, utexas Kd<1µM, jolma late, tier1 late, αVβ3 R6).
+#
+# Why this design:
+#   - Loss plateau on v1 (R0 vs R8) hit at step ~2k @ loss ~5.73. Pair task too easy.
+#   - Curriculum learning (Bengio 2009; MoCo v3; hard-neg SimCLR) ramps difficulty
+#     to keep gradient signal alive. Standard in vision/RL, never tried on SELEX.
+#   - Lit-check verdict: GREEN (no direct hits 2024-2026).
+
+run_id: tendril_aptamer_curriculum_v1
+seed: 0
+
+curriculum:
+  enabled: true
+  phases:
+    - start_step: 0
+      neg_tags: [easy_neg]
+    - start_step: 20000
+      neg_tags: [easy_neg, mid_neg]
+    - start_step: 50000
+      neg_tags: [mid_neg, hard_neg]
+
+data:
+  sources:
+    # ─── Easy negatives — R0 / naive library ─────────────────────────────────
+    - {name: jolma_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '== 0', class: r0, tag: easy_neg, weight: 1.0}
+    - {name: tier1_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '== 0', class: r0, tag: easy_neg, weight: 1.0}
+    - {name: rapt_tg2_r0,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet,    round_filter: null,    class: r0, tag: easy_neg, weight: 1.0}
+    - {name: syn_r0_lox1,     parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,        round_filter: null,    class: r0, tag: easy_neg, weight: 0.3}
+    - {name: syn_r0_cxcl5,    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_CXCL5/synthetic_r0.parquet,       round_filter: null,    class: r0, tag: easy_neg, weight: 0.3}
+
+    # ─── Medium negatives — TG2 mid-rounds (some enrichment, not binders) ───
+    - {name: rapt_tg2_r2,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201863.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r3,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201864.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r4,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201865.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+
+    # ─── Hard negatives — TG2 R5/R6 (close to R8 but not quite binders) ─────
+    - {name: rapt_tg2_r5,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201866.parquet,    round_filter: null,    class: r0, tag: hard_neg, weight: 1.0}
+    - {name: rapt_tg2_r6,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201867.parquet,    round_filter: null,    class: r0, tag: hard_neg, weight: 1.0}
+
+    # ─── Positives — most enriched + curated binders (constant across phases) ─
+    - {name: rapt_tg2_r7,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201868.parquet,    round_filter: null,    class: r_late, weight: 1.5}
+    - {name: rapt_tg2_r8,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet,    round_filter: null,    class: r_late, weight: 2.0}
+    - {name: jolma_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '>= 3',  class: r_late, weight: 1.0}
+    - {name: tier1_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '>= 1',  class: r_late, weight: 1.0}
+    - {name: deepaptamer,     parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_combined.parquet,      sequence_col: aptamer_sequence_RNA, round_filter: null, class: r_late, weight: 2.0}
+    - {name: utexas_strong,   parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet,           sequence_col: aptamer_sequence_clean, kd_filter_lt_nm: 1000, round_filter: null, class: r_late, weight: 3.0}
+
+  eval_panel:
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/instructna_benchmark/processed/instructna_lox1_cxcl5_kd.parquet
+    sequence_col: sequence
+
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits.parquet
+
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 2
+
+model:
+  d_model: 384
+  nhead: 6
+  num_layers: 8
+  dim_ff: 1536
+  embed_dim: 192
+  dropout: 0.1
+  grad_checkpoint: false
+
+training:
+  batch_size: 256
+  steps: 100000
+  warmup_steps: 2000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  tau: 0.2
+  amp: true
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 2000
+  retrieval_panel: instructna_lox1_cxcl5
+  metrics:
+    - retrieval_R@1
+    - retrieval_R@10
+    - kd_spearman
+
+ckpt:
+  every_steps: 10000
+  keep_last: 3
+  resume_from: null
+
+log:
+  every_steps: 100
+  to: stdout

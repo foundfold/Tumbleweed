@@ -1,0 +1,77 @@
+run_id: tumbleweed_rinalmo_scorer_v1
+
+# RiNALMo-backbone Kd SCORER: v10 heads (chem token + ESM-2 FiLM target conditioning +
+# contrastive round teacher) on a FROZEN, PRECOMPUTED RiNALMo-giga (650M) backbone.
+# Scorer-first: no denoiser. RiNALMo is never trained; all trainable weights are the
+# ~9.4M head params (single-digit-MB ckpt). The only heavy compute is the one-time
+# scripts/precompute_rinalmo_embeddings.py pass that fills rinalmo_cache below.
+#
+# Same SELEX corpus + winners + balance as tumbleweed_60m_diffusion_v5_film.yaml so the
+# RNA-lane comparison vs hybrid-film / raw-RiNALMo / v10 / TriFP is apples-to-apples.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638      # IL1RL1
+    chemistry: RNA
+    r_max: 7
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_centered.parquet
+  rinalmo_cache: ~/Desktop/autoRNA_data/tumbleweed/rinalmo_cache/rinalmo_corpus_emb.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 50
+  max_rows_per_family: 50000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  embed_dim: 256
+  rinalmo_dim: 1280
+  target_embed_dim: 1280
+  n_film_blocks: 2
+  dropout: 0.1
+  target_film: true
+  use_chem: true
+  use_time: true
+
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  mask_same_target: true
+  ckpt_every: 2500

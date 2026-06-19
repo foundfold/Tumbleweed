@@ -1,0 +1,595 @@
+data:
+  sources:
+  - name: htdna_efaecalis_R00
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R00.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R00
+    study_id: PRJNA615076
+  - name: htdna_efaecalis_R02
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R02.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.1818
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R02
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R03
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R03.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.2727
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R03
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R04
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R04.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.3636
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R04
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R05.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.4545
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R05
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R06.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.5455
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R06
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R07.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6364
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R07
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R08.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.7273
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R08
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R09.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8182
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R09
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R10.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 0.9091
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R10
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_efaecalis_R11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA615076/processed/PRJNA615076_R11.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA615076_R11
+    study_id: PRJNA615076
+    weight_by_count: true
+  - name: htdna_aniger_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_R0.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_R0
+    study_id: PRJNA1064871
+  - name: htdna_aniger_S3_R1
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R1.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.1111
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R1
+    study_id: PRJNA1064871
+  - name: htdna_aniger_S3_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R2.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.2222
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R2
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R3
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R3.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.3333
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R3
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R4
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R4.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.4444
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R4
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R5
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R5.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.5556
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R5
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R6.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6667
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R6
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R7.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.7778
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R7
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R8.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8889
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R8
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R9
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R9.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R9
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R9N
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R9N.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R9N
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S3_R9T
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S3_R9T.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S3_R9T
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S1_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S1_R2.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.2222
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S1_R2
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S1_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S1_R6.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6667
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S1_R6
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S1_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S1_R7.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.7778
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S1_R7
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S1_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S1_R8.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8889
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S1_R8
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S1_R9N
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S1_R9N.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S1_R9N
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S1_R9T
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S1_R9T.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S1_R9T
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S2_R2
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S2_R2.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.2222
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S2_R2
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S2_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S2_R6.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6667
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S2_R6
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S2_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S2_R7.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.7778
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S2_R7
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S2_R8
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S2_R8.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.8889
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S2_R8
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S2_R9N
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S2_R9N.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S2_R9N
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aniger_S2_R9T
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1064871/processed/PRJNA1064871_S2_R9T.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1064871_S2_R9T
+    study_id: PRJNA1064871
+    weight_by_count: true
+  - name: htdna_aphago_R04
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R04.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.3333
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R04
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R05
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R05.parquet
+    class: r_mid
+    weight: 1.0
+    round_frac: 0.4167
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R05
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R06
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R06.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.5
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R06
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R07
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R07.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.5833
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R07
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R08
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R08.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6667
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R08
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R09.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.75
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R09
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R10.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 0.8333
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R10
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R11.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 0.9167
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R11
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_R12.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_R12
+    study_id: PRJEB62495
+    weight_by_count: true
+  - name: htdna_aphago_Rc09
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_Rc09.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.75
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_Rc09
+    study_id: PRJEB62495
+    weight_by_count: true
+    is_counter_selection: true
+  - name: htdna_aphago_Rc11
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_Rc11.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 0.9167
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_Rc11
+    study_id: PRJEB62495
+    weight_by_count: true
+    is_counter_selection: true
+  - name: htdna_aphago_Rc12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJEB62495/processed/PRJEB62495_Rc12.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJEB62495_Rc12
+    study_id: PRJEB62495
+    weight_by_count: true
+    is_counter_selection: true
+  - name: htdna_motif_APX_P1_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_P1_R0.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_P1_R0
+    study_id: PRJNA1188194
+    target_class: apixaban
+  - name: htdna_motif_APX_P1_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_P1_R6.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_P1_R6
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: apixaban
+  - name: htdna_motif_APX_P1_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_P1_R10.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_P1_R10
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: apixaban
+  - name: htdna_motif_APX_P2_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_P2_R0.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_P2_R0
+    study_id: PRJNA1188194
+    target_class: apixaban
+  - name: htdna_motif_APX_P2_R6
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_P2_R6.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.6
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_P2_R6
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: apixaban
+  - name: htdna_motif_APX_P2_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_P2_R10.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_P2_R10
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: apixaban
+  - name: htdna_motif_APX_Init_R12
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_APX_Init_R12.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_APX_Init_R12
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: apixaban
+  - name: htdna_motif_HM_R0
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_HM_R0.parquet
+    class: r0
+    weight: 1.0
+    round_frac: 0.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_HM_R0
+    study_id: PRJNA1188194
+    target_class: morphine
+  - name: htdna_motif_HM_R7
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_HM_R7.parquet
+    class: r_late
+    weight: 1.5
+    round_frac: 0.7
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_HM_R7
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: morphine
+  - name: htdna_motif_HM_R10
+    parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex_dna/PRJNA1188194/processed/PRJNA1188194_HM_R10.parquet
+    class: r_late
+    weight: 2.0
+    round_frac: 1.0
+    chemistry: DNA
+    target_protein: null
+    library_id: PRJNA1188194_HM_R10
+    study_id: PRJNA1188194
+    weight_by_count: true
+    target_class: morphine
+_meta_htselex_dna_sources:
+  description: Tier A DNA HT-SELEX sources (4 studies, 57 parquets) for Tumbleweed
+    pretraining
+  studies:
+  - PRJNA615076
+  - PRJNA1064871
+  - PRJEB62495
+  - PRJNA1188194
+  chemistry: DNA
+  target_protein: null (whole-cell or small-molecule SELEX)
+  survey_doc: data_refs/ood_panels_dna/htselex_dna_deposits.md
+  build_scripts:
+  - scripts/build_htselex_PRJNA615076.py
+  - scripts/build_htselex_PRJNA1064871.py
+  - scripts/build_htselex_PRJEB62495.py
+  - scripts/build_htselex_PRJNA1188194.py

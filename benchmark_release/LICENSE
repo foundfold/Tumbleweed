@@ -1,0 +1,15 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+The data files in this directory (the Tumbleweed-RecoveryBench and Tumbleweed-KdBench
+benchmarks) are licensed under the Creative Commons Attribution 4.0 International
+License. You are free to share and adapt the material for any purpose, even
+commercially, provided you give appropriate credit.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Attribution: please cite the Tumbleweed paper (FoundFold, 2026).
+
+Provenance note: some K_D values were located through aggregator databases used only
+as a PubMed-ID / citation finder. Every citation points to the original primary paper,
+not the aggregator. Raw SELEX reads are not re-hosted here; see README.md for the
+originating studies and accessions.

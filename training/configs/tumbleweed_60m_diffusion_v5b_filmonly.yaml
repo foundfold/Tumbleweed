@@ -1,0 +1,87 @@
+run_id: tumbleweed_60m_diffusion_v5b_filmonly
+
+# v5b = ATTRIBUTION ablation for v5_film. v5_film WON (in-corpus own−zero +0.258 vs v2 +0.152;
+# held-out zero-shot +0.265 vs +0.061; CXCL5 inversion fixed) by adding FiLM ON TOP of the
+# prepended target token. This run isolates the FiLM contribution: use_target_token=FALSE +
+# target_film=TRUE → the target reaches the denoiser ONLY through per-layer γ/β, never as a
+# position-0 token. If v5b ≈ v5_film, FiLM is the whole story and the prepend token is vestigial
+# (the architecture diagnosis in its purest form). If v5b < v5_film, the token + FiLM are
+# complementary. InfoNCE head still trains (it reads the projected target rep regardless).
+# Everything else identical to v5_film: mean-pool, CENTERED ESM-2 bank, supervised-InfoNCE,
+# v2's winning ~12%-winner data balance. Held-out LOX1/CXCL5 still NOT in the pool.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638      # IL1RL1
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_centered.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 50
+  max_rows_per_family: 50000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: false       # ABLATION: target reaches the trunk ONLY via FiLM, not as a token
+  target_film: true
+  grad_checkpoint: false
+
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  mask_same_target: true
+  ckpt_every: 2500

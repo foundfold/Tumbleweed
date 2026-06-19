@@ -1,0 +1,55 @@
+# MLM baseline — apples-to-apples with the contrastive default.yaml.
+# Same encoder arch, same compute budget, same data sources, no round-class split
+# (single pool, the way RaptScore / InstructNA / AptaBERT treat SELEX data).
+
+run_id: tendril_mlm_v1
+seed: 0
+
+data:
+  sources:
+    # All same files as the contrastive config — but pooled as one big sequence
+    # bucket. round info is intentionally ignored. round_filter set to '>= 0 | isna'
+    # would over-include r0; just use everything.
+    - {name: jolma_all,       parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: null, class: r_late, weight: 1.0}
+    - {name: tier1_all,       parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: null, class: r_late, weight: 1.0}
+    - {name: rapt_tg2,        parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/study.parquet,        round_filter: null, class: r_late, weight: 1.0}
+    - {name: htselex_pilot,   parquet: ~/Desktop/autoRNA_data/tumbleweed/htselex/PRJEB28411/processed/study.parquet,              round_filter: null, class: r_late, weight: 1.0}
+    - {name: deepaptamer,     parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_combined.parquet,      sequence_col: aptamer_sequence_RNA, round_filter: null, class: r_late, weight: 2.0}
+    - {name: utexas,          parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet,           sequence_col: aptamer_sequence_clean, round_filter: null, class: r_late, weight: 3.0}
+
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits.parquet
+  max_len: 128
+  num_workers: 2
+  mask_prob: 0.15
+
+# Identical to contrastive default.yaml's `model` block — apples-to-apples
+model:
+  d_model: 384
+  nhead: 6
+  num_layers: 8
+  dim_ff: 1536
+  dropout: 0.1
+  grad_checkpoint: false
+
+training:
+  batch_size: 256
+  steps: 100000
+  warmup_steps: 2000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 2000
+
+ckpt:
+  every_steps: 10000
+  keep_last: 3
+
+log:
+  every_steps: 100
+  to: stdout

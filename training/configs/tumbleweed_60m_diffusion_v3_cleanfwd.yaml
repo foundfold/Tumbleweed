@@ -1,0 +1,83 @@
+run_id: tumbleweed_60m_diffusion_v3_cleanfwd
+seed: 0
+
+# Tumbleweed-Hybrid v3: v2 components (CNN + kmer) but with the v2 CNN bug FIXED.
+# Root cause of v2's regression: the CNN convolved over MASK-token embeddings during
+# training but saw CLEAN input at encode() — a train/inference distribution shift that
+# tanked DNA Kd ranking (-0.40, recovered by disabling CNN at inference).
+# Fix: two-forward trunk. The denoiser runs CNN on MASKED input at sampled t; the
+# contrastive path runs a SEPARATE forward with CNN on CLEAN input at t=0, matching
+# encode() exactly. kmer pooled-add unchanged (already clean-seq, no shift).
+# Same 7 RNA SELEX families as v1/v2 → directly comparable on selexclean LOO.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638      # IL1RL1
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings.parquet
+  max_rows_per_family: 50000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  grad_checkpoint: false
+  cnn_kernels: [5, 7]           # v15-style motif front-end (RNA lever)
+  kmer_token_dim: 1600          # standard k=3,4,5 (1344) + gapped k=3 l=4 (256) = 1600 (DNA lever)
+
+training:
+  batch_size: 32
+  steps: 15000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  ckpt_every: 2500

@@ -1,0 +1,77 @@
+# Hybrid β=2.0 + 60-min budget — fix the Kd direction issue from hybrid_30min.
+# β=2.0 means InfoNCE is weighted 4x more than MLM. Should preserve A4 from MLM head
+# while letting the contrastive head pull ρ positive.
+
+run_id: tendril_hybrid_beta2_60min
+seed: 0
+
+curriculum:
+  enabled: true
+  phases:
+    # Scaled for 60-min budget at hybrid's ~3.2 step/s (~11500 steps total).
+    - start_step: 0
+      neg_tags: [easy_neg]
+    - start_step: 2400
+      neg_tags: [easy_neg, mid_neg]
+    - start_step: 6000
+      neg_tags: [mid_neg, hard_neg]
+
+data:
+  sources:
+    - {name: jolma_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '== 0', class: r0, tag: easy_neg, weight: 1.0}
+    - {name: tier1_r0,        parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '== 0', class: r0, tag: easy_neg, weight: 1.0}
+    - {name: rapt_tg2_r0,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201861.parquet,    round_filter: null,    class: r0, tag: easy_neg, weight: 1.0}
+    - {name: syn_r0_lox1,     parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_LOX1/synthetic_r0.parquet,        round_filter: null,    class: r0, tag: easy_neg, weight: 0.3}
+    - {name: syn_r0_cxcl5,    parquet: ~/Desktop/autoRNA_data/tumbleweed/synthetic_r0/InstructNA_CXCL5/synthetic_r0.parquet,       round_filter: null,    class: r0, tag: easy_neg, weight: 0.3}
+    - {name: rapt_tg2_r2,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201863.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r3,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201864.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r4,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201865.parquet,    round_filter: null,    class: r0, tag: mid_neg,  weight: 1.0}
+    - {name: rapt_tg2_r5,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201866.parquet,    round_filter: null,    class: r0, tag: hard_neg, weight: 1.0}
+    - {name: rapt_tg2_r6,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201867.parquet,    round_filter: null,    class: r0, tag: hard_neg, weight: 1.0}
+    - {name: rapt_tg2_r7,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201868.parquet,    round_filter: null,    class: r_late, weight: 1.5}
+    - {name: rapt_tg2_r8,     parquet: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR201869.parquet,    round_filter: null,    class: r_late, weight: 2.0}
+    - {name: jolma_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/jolma2013/jolma2013_combined.parquet,                    round_filter: '>= 3',  class: r_late, weight: 1.0}
+    - {name: tier1_late,      parquet: ~/Desktop/autoRNA_data/tumbleweed/tier1/tier1_combined.parquet,                            round_filter: '>= 1',  class: r_late, weight: 1.0}
+    - {name: deepaptamer,     parquet: ~/Desktop/autoRNA_data/tumbleweed/deepaptamer/processed/deepaptamer_combined.parquet,      sequence_col: aptamer_sequence_RNA, round_filter: null, class: r_late, weight: 2.0}
+    - {name: utexas_strong,   parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet,           sequence_col: aptamer_sequence_clean, kd_filter_lt_nm: 1000, round_filter: null, class: r_late, weight: 3.0}
+
+  test_exclusion_parquet: /home/ubuntu/Tumbleweed/data_refs/aptamer_splits.parquet
+  max_len: 128
+  shuffle_buffer: 50000
+  num_workers: 2
+  mask_prob: 0.15
+
+model:
+  d_model: 384
+  nhead: 6
+  num_layers: 8
+  dim_ff: 1536
+  embed_dim: 192
+  dropout: 0.1
+  grad_checkpoint: false
+
+training:
+  batch_size: 256
+  steps: 100000
+  warmup_steps: 500
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  tau: 0.2
+  hybrid_alpha: 1.0
+  hybrid_beta: 2.0   # 4x more weight on InfoNCE — was 0.5 in hybrid_30min
+  amp: true
+  ddp: auto
+  compile: false
+
+eval:
+  every_steps: 1000
+
+ckpt:
+  every_steps: 2000
+  keep_last: 3
+
+log:
+  every_steps: 100
+  to: stdout

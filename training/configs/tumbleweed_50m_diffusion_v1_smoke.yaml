@@ -1,0 +1,40 @@
+run_id: tumbleweed_50m_diffusion_v1_smoke
+seed: 0
+
+# Smoke test: single SELEX family (rapt_tg2 for TGM2). Once this trains cleanly
+# (loss decreasing, generation samples look like aptamer-shape), scale by adding
+# more families to families[]. Production target = all Group A SELEX from the
+# data catalog.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings.parquet
+  max_rows_per_family: 100000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  grad_checkpoint: false
+
+training:
+  batch_size: 128
+  steps: 3000               # smoke — full run will be ~50k
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  ckpt_every: 1000

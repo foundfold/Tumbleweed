@@ -1,0 +1,89 @@
+run_id: tumbleweed_60m_diffusion_v2_kdbench
+seed: 0
+
+# Diverse-target retrain to break the ln(6) InfoNCE floor that killed conditioning at v1_multifam.
+# Adds ~190 Kd-bench targets as winner/target pairs on top of the 7 round-structured SELEX families.
+# Three changes vs v1_multifam:
+#   1. winners_parquet  — 193-target Kd-bench binders injected at mild noise (t=0.2)
+#   2. target_embeddings_parquet → CENTERED bank (raw mean-pool ESM-2 stays collinear cos~0.88
+#      even at 193 targets; mean-centering collapses it to ~0 — the geometric fix conditioning needs)
+#   3. mask_same_target — supervised-InfoNCE: mask within-batch same-target false negatives
+# SELEX families capped at 5000 rows each + winners upsampled (repeat 50) so batches stay
+# target-diverse — otherwise the high-row SELEX families swamp the 193 targets and InfoNCE
+# never sees them. Held-out zero-shot probes LOX1 (P78380) / CXCL5 (P42830) are NOT in the
+# Kd-bench pool, so the generalization test is clean.
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: Q01638      # IL1RL1
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_centered.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4               # → t = 1 - 4/5 = 0.2 (mild noise; converged binders)
+  winner_r_max: 5
+  winner_repeat: 50             # upsample ~630 binders → ~31k rows to balance vs capped SELEX
+  max_rows_per_family: 5000     # capped (was 50000) to keep batches target-diverse for InfoNCE
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  grad_checkpoint: false
+
+training:
+  batch_size: 128               # larger batch → more in-batch negatives → stronger InfoNCE
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  mask_same_target: true        # supervised-InfoNCE: drop within-batch same-target false negatives
+  ckpt_every: 2500

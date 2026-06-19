@@ -1,0 +1,48 @@
+run_id: tumbleweed_rinalmo_scorer_noleak
+
+# SIMPLE-FIRST fix for the collapse in tumbleweed_rinalmo_scorer_v1: that run set
+# target_film=true, which injected the ESM-2 target into the SEQUENCE path → the
+# contrastive head aligned proj↔target_proj WITHOUT reading the sequence (InfoNCE
+# collapsed to ~0; LOO underperformed raw RiNALMo). Here target_film=false, so proj is
+# a SEQUENCE-ONLY summary of frozen RiNALMo features (+ chem token + round-t); the
+# contrastive round teacher then does genuine seq↔target retrieval with no shortcut.
+# Same corpus/cache/balance as v1 — only model.target_film changes.
+data:
+  families:
+  - {name: rapt_tg2, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet, target_uniprot: P21980, chemistry: RNA, r_max: 8}
+  - {name: rapt_a, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet, target_uniprot: P31371, chemistry: RNA, r_max: 6}
+  - {name: rapt_b, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet, target_uniprot: Q01638, chemistry: RNA, r_max: 7}
+  - {name: rapt_c, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet, target_uniprot: P31371, chemistry: RNA, r_max: 7}
+  - {name: rapidselex_parp1, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet, target_uniprot: P09874, chemistry: RNA, r_max: 12}
+  - {name: rapidselex_mecp2, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet, target_uniprot: P51608, chemistry: RNA, r_max: 12}
+  - {name: alphasyn_s1, rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet, target_uniprot: P37840, chemistry: RNA, r_max: 15}
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_centered.parquet
+  rinalmo_cache: ~/Desktop/autoRNA_data/tumbleweed/rinalmo_cache/rinalmo_corpus_emb.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 50
+  max_rows_per_family: 50000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  embed_dim: 256
+  rinalmo_dim: 1280
+  target_embed_dim: 1280
+  n_film_blocks: 2
+  dropout: 0.1
+  target_film: false        # <-- the fix: no target leak into the sequence rep
+  use_chem: true
+  use_time: true
+
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  mask_same_target: true
+  ckpt_every: 2500
