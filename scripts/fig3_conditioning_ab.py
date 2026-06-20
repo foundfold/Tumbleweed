@@ -14,9 +14,9 @@ Two panels, side by side. The juxtaposition IS the argument:
      label-diversity ceiling, not the architecture.
 
 Sources (data_refs/):
-  (a) null_conditioning_tumbleweed_60m_diffusion_v7_film_cnn.csv
-        cols: target, auroc_own, auroc_zero, own_minus_zero
-  (b) recovery_v7_film_cnn_loo_{FGF9,IL1RL1,PARP1,MECP2,SNCA}_lowt.csv
+  (a) null_conditioning_tumbleweed_60m_diffusion_v7_film_cnn_mst2.csv
+        cols: target, auroc_own, auroc_zero, own_minus_zero  (mouse ST2 fix)
+  (b) recovery_loo_{FGF9,IL1RL1,PARP1,MECP2,SNCA}_mst2_lowt.csv
         col: AUROC_winner_vs_random
   EvoFlow reference: recovery_evoflow_lowt.csv mean AUROC_winner_vs_random (= 0.521)
 """
@@ -38,7 +38,7 @@ RED = '#c0392b'
 
 
 def load_panel_a() -> tuple:
-    df = pd.read_csv(DR / 'null_conditioning_tumbleweed_60m_diffusion_v7_film_cnn.csv').set_index('target')
+    df = pd.read_csv(DR / 'null_conditioning_tumbleweed_60m_diffusion_v7_film_cnn_mst2.csv').set_index('target')
     own = [float(df.loc[t, 'auroc_own']) for t in TARGETS]
     zero = [float(df.loc[t, 'auroc_zero']) for t in TARGETS]
     return own, zero
@@ -47,7 +47,7 @@ def load_panel_a() -> tuple:
 def load_panel_b() -> list:
     vals = []
     for t in TARGETS:
-        df = pd.read_csv(DR / f'recovery_v7_film_cnn_loo_{t}_lowt.csv')
+        df = pd.read_csv(DR / f'recovery_loo_{t}_mst2_lowt.csv')
         vals.append(float(df['AUROC_winner_vs_random'].iloc[0]))
     return vals
 

@@ -1,4 +1,4 @@
-run_id: tumbleweed_60m_diffusion_v7_film_cnn_loo_SNCA
+run_id: tumbleweed_60m_diffusion_v7_film_cnn_loo_SNCA_mst2
 data:
   families:
   - name: rapt_tg2
@@ -13,7 +13,7 @@ data:
     r_max: 6
   - name: rapt_b
     rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
-    target_uniprot: Q01638
+    target_uniprot: P14719      # ST2/IL-33R (mouse Il1rl1) — was mislabeled human Q01638
     chemistry: RNA
     r_max: 7
   - name: rapt_c

@@ -9,7 +9,7 @@ AUROC = AUROC(winner vs composition-matched random), low-t (0.1/0.15/0.2), N_MAS
 0.5 = chance. Tumbleweed is scored on EvoFlow's exact seqs so the margin is not a set artifact.
 
 Sources (data_refs/):
-  recovery_likelihood_v7_film_cnn_matchedseqs_lowt.csv  (Tumbleweed, matched)
+  recovery_likelihood_v7_film_cnn_mst2_matchedseqs_lowt.csv  (Tumbleweed, matched; mouse ST2 fix)
   recovery_evoflow_lowt.csv                             (EvoFlow-RNA)
   recovery_rinalmo_lowt.csv                             (RiNALMo-MLM)
 """
@@ -26,7 +26,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 TARGETS = ['FGF9', 'IL1RL1', 'PARP1', 'MECP2', 'SNCA']
 SERIES = [
-    ('recovery_likelihood_v7_film_cnn_matchedseqs_lowt.csv', 'Tumbleweed (matched)', '#1b6ca8'),
+    ('recovery_likelihood_v7_film_cnn_mst2_matchedseqs_lowt.csv', 'Tumbleweed (matched)', '#1b6ca8'),
     ('recovery_evoflow_lowt.csv', 'EvoFlow-RNA (33M, uncond.)', '#b0b0b0'),
     ('recovery_rinalmo_lowt.csv', 'RiNALMo-MLM', '#d98a3d'),
 ]

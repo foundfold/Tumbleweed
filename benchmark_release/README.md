@@ -55,7 +55,7 @@ Winner and composition-matched random sequences for the 5 RecoveryBench targets
 
 - `recoverybench_per_target.csv` — per-target winner-vs-random AUROC for Tumbleweed
   (target-matched) vs released EvoFlow-RNA (33M, unconditional) and a RiNALMo-MLM
-  baseline. Tumbleweed mean 0.943.
+  baseline. Tumbleweed mean 0.947.
 - `kdbench_stability.csv` — KdBench affinity-ranking metrics (mean/median/trimmed
   Spearman, win rate, t-stat) across 47 leave-one-target-out panels for every method.
   No method ranks held-out affinity above chance.
@@ -69,7 +69,8 @@ reads; cite the originating study / accession:
 
 | Targets | Source | Accession |
 |---|---|---|
-| FGF9 (P31371), IL1RL1 (Q01638) | RaptScore (NAR 2026) supplemental tables | — (published supplemental) |
+| FGF9 (P31371) | RaptScore (NAR 2026), HT-SELEX Dataset A (35-nt library) | DDBJ `DRA019577` |
+| ST2 / IL-33R (mouse Il1rl1) | RaptScore (NAR 2026), HT-SELEX Dataset B (35-nt library) | DDBJ `DRA019609` |
 | PARP1 (P09874), MECP2 (P51608) | RAPID-SELEX | ENA `PRJNA1122221` / GEO `GSE269538` |
 | SNCA / α-synuclein (P37840) | 2'-F-pyrimidine RNA N35 SELEX (NAR 2024) | ENA `PRJEB70964`, doi:10.1093/nar/gkae544 |
 

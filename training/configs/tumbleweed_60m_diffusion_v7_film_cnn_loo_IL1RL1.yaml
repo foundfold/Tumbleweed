@@ -1,4 +1,4 @@
-run_id: tumbleweed_60m_diffusion_v7_film_cnn_loo_IL1RL1
+run_id: tumbleweed_60m_diffusion_v7_film_cnn_loo_IL1RL1_mst2
 data:
   families:
   - name: rapt_tg2
