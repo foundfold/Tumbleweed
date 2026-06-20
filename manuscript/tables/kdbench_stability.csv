@@ -1,0 +1,6 @@
+Method,mean rho,median,trim-20%,win rate,t-stat,k
+TW-Generator (likelihood head),0.082,0.116,0.105,0.6,1.27,47
+TW-TriFP (k-mer ⊕ ESM-2 → GBDT),0.057,0.099,0.064,0.55,1.01,47
+RiNALMo-650M → Ridge,0.04,0.024,0.048,0.51,0.81,47
+TW-Contrastive scorer,0.017,0.037,0.028,0.53,0.28,47
+TW-Contrastive scorer + CNN,-0.036,0.0,-0.028,0.47,-0.53,47
