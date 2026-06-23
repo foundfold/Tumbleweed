@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent.parent
 PER = ROOT / 'data_refs' / 'v2_loo_per_target.csv'
-OUT = ROOT / 'research' / 'manuscript' / 'figures'
+OUT = ROOT / 'manuscript' / 'figures'
 OUT.mkdir(parents=True, exist_ok=True)
 
 # (column, display label) — TW-* = rankers WE built (so reviewers see these are all Tumbleweed

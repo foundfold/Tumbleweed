@@ -1,0 +1,2 @@
+target,uniprot,n,mean_nll_winner,mean_nll_naive,mean_nll_random,AUROC_winner_vs_random,AUROC_winner_vs_naive
+PARP1,P09874,400,4.536838054656982,5.075810432434082,5.336281776428223,0.7148625,0.63936875

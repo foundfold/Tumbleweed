@@ -1,0 +1,2 @@
+target,uniprot,n,mean_nll_winner,mean_nll_naive,mean_nll_random,AUROC_winner_vs_random,AUROC_winner_vs_naive
+SNCA,P37840,400,3.7844040393829346,4.025500297546387,4.088112831115723,0.59840625,0.5794375

@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent.parent
 DR = ROOT / 'data_refs'
-OUT = ROOT / 'research' / 'manuscript' / 'figures'
+OUT = ROOT / 'manuscript' / 'figures'
 OUT.mkdir(parents=True, exist_ok=True)
 
 TARGETS = ['FGF9', 'IL1RL1', 'PARP1', 'MECP2', 'SNCA']

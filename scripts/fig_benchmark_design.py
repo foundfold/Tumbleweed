@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Rectangle, Circle
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / 'research' / 'manuscript' / 'figures'
+OUT = ROOT / 'manuscript' / 'figures'
 OUT.mkdir(parents=True, exist_ok=True)
 
 BLUE = '#1b6ca8'

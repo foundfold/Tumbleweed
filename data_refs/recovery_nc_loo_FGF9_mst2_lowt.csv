@@ -1,0 +1,2 @@
+target,uniprot,n,mean_nll_winner,mean_nll_naive,mean_nll_random,AUROC_winner_vs_random,AUROC_winner_vs_naive
+FGF9,P31371,400,3.2552504539489746,3.099163293838501,3.238837480545044,0.490875,0.41875

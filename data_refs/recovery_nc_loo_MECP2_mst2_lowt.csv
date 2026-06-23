@@ -1,0 +1,2 @@
+target,uniprot,n,mean_nll_winner,mean_nll_naive,mean_nll_random,AUROC_winner_vs_random,AUROC_winner_vs_naive
+MECP2,P51608,400,2.6667425632476807,2.5895087718963623,2.8328697681427,0.624225,0.441625
