@@ -58,7 +58,8 @@ def main():
     ax.set_ylabel('AUROC (winner vs. random)')
     ax.set_ylim(0.4, 1.05)
     ax.set_title('Tumbleweed-RecoveryBench: ranking true SELEX winners above random')
-    handles_labels = [f'{lab}  (mean {means[lab]:.3f})' for _, lab, _ in SERIES]
+    # Legend shows model names only; per-model means live in the manuscript text/Table S2.
+    handles_labels = [lab for _, lab, _ in SERIES]
     ax.legend(ax.containers, handles_labels, loc='lower center', ncol=3,
               fontsize=8, frameon=False, bbox_to_anchor=(0.5, -0.22))
     for s in ('top', 'right'):

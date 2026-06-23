@@ -100,9 +100,9 @@ def main():
             color=ORANGE, weight='bold', style='italic')
 
     # ===================== SINGLE DENOISE PASS =====================
-    ax.text(2.55, 6.45, 'DENOISE pass', ha='center', va='center', fontsize=9.5,
+    ax.text(2.55, 6.62, 'DENOISE pass', ha='center', va='center', fontsize=9.5,
             color=BLUE, weight='bold')
-    ax.text(2.55, 6.22, 'masked ids,  t = round-t   (trunk run once per step)',
+    ax.text(2.55, 6.42, 'masked ids,  t = round-t   (trunk run once per step)',
             ha='center', va='center', fontsize=7.8, color=GREY, style='italic')
     box(ax, 0.7, 5.30, 3.7, 0.62,
         'dense → GELU → norm\nlogits = h·Eᵀ + bias   (B, L, V)', LBLUE, BLUE,
@@ -111,8 +111,10 @@ def main():
         'L_denoise\nweighted CE on masked positions\n(EvoFlow-style, weight 1/t, clamp [1/300, 1])',
         LGREEN, GREEN, fontsize=7.8)
 
-    # trunk → denoise head → loss (single straight column)
-    arrow(ax, (tx + tw / 2, 7.05), (tx + tw / 2, 5.92), color=BLUE)
+    # trunk → [DENOISE pass label] → denoise head → loss. Two short arrows bracket the
+    # label so the connector never runs through the text.
+    arrow(ax, (tx + tw / 2, 7.05), (tx + tw / 2, 6.80), color=BLUE)
+    arrow(ax, (2.55, 6.24), (2.55, 5.95), color=BLUE)
     arrow(ax, (2.55, 5.30), (2.55, 4.92), color=BLUE)
 
     # ===================== OBJECTIVE =====================
