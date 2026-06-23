@@ -26,7 +26,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 TARGETS = ['FGF9', 'IL1RL1', 'PARP1', 'MECP2', 'SNCA']
 SERIES = [
-    ('recovery_likelihood_v7_film_cnn_mst2_matchedseqs_lowt.csv', 'Tumbleweed (matched)', '#1b6ca8'),
+    ('recovery_likelihood_v8_film_cnn_nc_mst2_matchedseqs_lowt.csv', 'Tumbleweed (matched)', '#1b6ca8'),
     ('recovery_evoflow_lowt.csv', 'EvoFlow-RNA (33M, uncond.)', '#b0b0b0'),
     ('recovery_rinalmo_lowt.csv', 'RiNALMo-MLM', '#d98a3d'),
 ]

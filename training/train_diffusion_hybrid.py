@@ -330,6 +330,7 @@ def main():
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=n_steps)
 
     lam_diff = cfg['training'].get('lam_diff', 0.5)
+    lam_contrast = cfg['training'].get('lam_contrast', 1.0)  # 0 disables the InfoNCE term (ablation)
     # contrastive_clean_forward: True → separate clean-seq forward at t=0 for the proj head
     # (hybrid_cleanfwd, CNN-consistent). False (default) → reuse the noisy denoiser forward
     # at round-t (hybrid_plain recipe; round-noise is a beneficial SELEX-matched aug).
@@ -346,7 +347,7 @@ def main():
         print(msg); log.write(msg + '\n'); log.flush()
 
     logp(f'=== training {cfg["run_id"]} ===')
-    logp(f'  steps={n_steps}, batch={cfg["training"]["batch_size"]}, lr={cfg["training"]["lr"]}, lam_diff={lam_diff}')
+    logp(f'  steps={n_steps}, batch={cfg["training"]["batch_size"]}, lr={cfg["training"]["lr"]}, lam_diff={lam_diff}, lam_contrast={lam_contrast}')
 
     step = 0
     data_iter = iter(loader)
@@ -382,13 +383,17 @@ def main():
             else:
                 same_tgt = torch.cdist(tgt.float(), tgt.float()) < 1e-6        # (B, B) bool
 
+        want_proj = lam_contrast > 0  # skip the proj/contrastive path entirely when ablated off
         with torch.amp.autocast(device_type=device.type, dtype=torch.bfloat16, enabled=use_amp):
-            out = model(noisy_ids, tgt, t, want_denoise=True, want_proj=True,
+            out = model(noisy_ids, tgt, t, want_denoise=True, want_proj=want_proj,
                         kmer_feats=kmer_feats, clean_ids=ids if clean_fwd else None,
                         target_mask=tgt_mask, trifp_fp=trifp_fp)
             L_d = denoise_loss(out['logits'], ids, mask_pos, t)
-            L_c = contrast_loss(out['proj'], out['target_proj'], same_target_mask=same_tgt)
-            L = L_c + lam_diff * L_d
+            if want_proj:
+                L_c = contrast_loss(out['proj'], out['target_proj'], same_target_mask=same_tgt)
+            else:
+                L_c = torch.zeros((), device=device)
+            L = lam_contrast * L_c + lam_diff * L_d
 
         opt.zero_grad(set_to_none=True)
         L.backward()

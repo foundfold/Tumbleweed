@@ -390,6 +390,10 @@ class AptamerDiffusionHybrid(nn.Module):
             pooled = (xs * not_pad).sum(dim=1) / not_pad.sum(dim=1).clamp_min(1e-6)
             if self.kmer_token_dim > 0 and kmer_feats is not None:
                 pooled = pooled + self.kmer_proj(kmer_feats)
+            # pre-projection mean-pooled TRUNK hidden. Trained by the denoising objective, so it
+            # is a valid representation even when the contrastive proj_head is ablated off
+            # (lam_contrast=0) and never trained. KdBench ranks the nc generator off this.
+            out['pooled'] = pooled
             proj = F.normalize(self.proj_head(pooled), dim=-1)
             out['proj'] = proj
             if tgt_vec is not None:
@@ -400,11 +404,17 @@ class AptamerDiffusionHybrid(nn.Module):
     @torch.no_grad()
     def encode(self, input_ids: torch.Tensor, target_emb: torch.Tensor | None = None,
                kmer_feats: torch.Tensor | None = None,
-               target_mask: torch.Tensor | None = None):
+               target_mask: torch.Tensor | None = None,
+               representation: str = 'proj'):
         """Inference helper for kdbench scoring (matches AptamerEncoder.encode signature).
 
         If the model uses kmer features and none are supplied, they are computed from
         input_ids here so callers (e.g. the LOO probe) need no extra plumbing.
+
+        representation='proj' (default) returns the L2-normalized contrastive projection
+        (valid only when the model was trained with the contrastive term). 'pooled' returns
+        the pre-projection mean-pooled trunk hidden, which is trained by the denoising
+        objective and is the correct ranker for contrastive-free (lam_contrast=0) models.
         """
         if self.kmer_token_dim > 0 and kmer_feats is None:
             from kmer_features import build_kmer_features
@@ -414,7 +424,7 @@ class AptamerDiffusionHybrid(nn.Module):
         t = torch.zeros(input_ids.size(0), device=input_ids.device)
         out = self.forward(input_ids, target_emb, t, want_denoise=False, want_proj=True,
                            kmer_feats=kmer_feats, target_mask=target_mask)
-        return out['proj']
+        return out['pooled'] if representation == 'pooled' else out['proj']
 
 
 # ─── Loss helpers ─────────────────────────────────────────────────────────────

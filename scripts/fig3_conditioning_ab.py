@@ -38,7 +38,7 @@ RED = '#c0392b'
 
 
 def load_panel_a() -> tuple:
-    df = pd.read_csv(DR / 'null_conditioning_tumbleweed_60m_diffusion_v7_film_cnn_mst2.csv').set_index('target')
+    df = pd.read_csv(DR / 'null_conditioning_tumbleweed_60m_diffusion_v8_film_cnn_nc_mst2.csv').set_index('target')
     own = [float(df.loc[t, 'auroc_own']) for t in TARGETS]
     zero = [float(df.loc[t, 'auroc_zero']) for t in TARGETS]
     return own, zero
@@ -47,7 +47,7 @@ def load_panel_a() -> tuple:
 def load_panel_b() -> list:
     vals = []
     for t in TARGETS:
-        df = pd.read_csv(DR / f'recovery_loo_{t}_mst2_lowt.csv')
+        df = pd.read_csv(DR / f'recovery_nc_loo_{t}_mst2_lowt.csv')
         vals.append(float(df['AUROC_winner_vs_random'].iloc[0]))
     return vals
 

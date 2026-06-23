@@ -1,0 +1,87 @@
+run_id: tumbleweed_60m_diffusion_v8_film_cnn_nc_mst2  # nc = contrastive term OFF (lam_contrast=0)
+
+# v7 = v5_film (the conditioning WINNER) + v15-style CNN motif front-end on the denoiser input.
+# Rationale: FiLM (v5) fixed the conditioning ARCHITECTURE (own−zero held-out +0.265); the CNN is
+# an ORTHOGONAL lever that acts on the denoiser's sequence pathway, not the target pathway. v15
+# showed the CNN front-end closes the RNA gap and lifts DNA (project_v15_cnn_result). So v7 stacks
+# the two independent wins: keep FiLM conditioning, add depthwise motif convs (k=5,7) on the input
+# token embeddings before the transformer trunk. +small params; conditioning untouched.
+# Everything else identical to v5_film (same corpus, balance, CENTERED mean-pool bank, lam_diff=0.5).
+data:
+  families:
+  - name: rapt_tg2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptranker/PRJDB9110_TG2/processed/DRR*.parquet
+    target_uniprot: P21980      # TGM2
+    chemistry: RNA
+    r_max: 8
+
+  - name: rapt_a
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/A_R*.parquet
+    target_uniprot: P31371      # FGF9
+    chemistry: RNA
+    r_max: 6
+
+  - name: rapt_b
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/B_R*.parquet
+    target_uniprot: P14719      # ST2/IL-33R (mouse Il1rl1) — RaptScore Dataset B TRUE target (was mislabeled human Q01638)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapt_c
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/raptscore_selex/processed/C_R*.parquet
+    target_uniprot: P31371      # FGF9 (independent campaign)
+    chemistry: RNA
+    r_max: 7
+
+  - name: rapidselex_parp1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_PARP1_R*.parquet
+    target_uniprot: P09874      # PARP1
+    chemistry: RNA
+    r_max: 12
+
+  - name: rapidselex_mecp2
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/rapidselex/processed/rapidselex_MECP2_R*.parquet
+    target_uniprot: P51608      # MECP2
+    chemistry: RNA
+    r_max: 12
+
+  - name: alphasyn_s1
+    rounds_glob: ~/Desktop/autoRNA_data/tumbleweed/alphasyn/processed/alphasyn_S1_R*.parquet
+    target_uniprot: P37840      # SNCA (alpha-synuclein); 2'F-pyrimidine RNA
+    chemistry: RNA
+    r_max: 15
+
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_centered.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  winner_round: 4
+  winner_r_max: 5
+  winner_repeat: 50
+  max_rows_per_family: 50000
+  ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
+
+model:
+  d_model: 768
+  nhead: 12
+  num_layers: 8
+  dim_ff: 3072
+  dropout: 0.1
+  embed_dim: 256
+  max_len: 96
+  target_embed_dim: 1280
+  use_target_token: true
+  target_film: true
+  cnn_kernels: [5, 7]           # NEW vs v5_film: v15-style motif front-end on denoiser input
+  grad_checkpoint: false
+
+training:
+  batch_size: 128
+  steps: 20000
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  amp: true
+  lam_diff: 0.5
+  lam_contrast: 0.0           # contrastive term OFF (ablated as non-load-bearing, Table S3)
+  mask_same_target: true
+  ckpt_every: 2500
