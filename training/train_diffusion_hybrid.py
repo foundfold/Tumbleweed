@@ -365,7 +365,13 @@ def main():
         trifp_fp = batch['trifp_fp'].to(device, non_blocking=True) if 'trifp_fp' in batch else None
         round_k = batch['round_k'].to(device)
         r_max = batch['r_max'].to(device)
-        t = round_to_t(round_k, r_max).to(device)
+        # t-schedule ablation: 'selex_round' (default, the headline mechanism) maps the
+        # SELEX round → noise level; 'uniform' samples t ~ U(0,1) per sequence as a
+        # round-agnostic control. Everything else (FiLM+CNN, nc, corpus) is identical.
+        if cfg['training'].get('t_schedule', 'selex_round') == 'uniform':
+            t = torch.rand(round_k.shape[0], device=device)
+        else:
+            t = round_to_t(round_k, r_max).to(device)
 
         # Sample mask per-sequence according to t
         noisy_ids, mask_pos = random_mask(ids, t)
