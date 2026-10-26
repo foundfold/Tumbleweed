@@ -11,7 +11,7 @@ data:
     target_uniprot: P21980
     chemistry: RNA
     r_max: 8
-  target_embeddings_parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/target_protein_embeddings.parquet
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings.parquet
   max_rows_per_family: 20000     # cap memory for Mac MPS + concurrent v19
   ckpt_dir: ~/Desktop/autoRNA_data/tumbleweed/training_runs
 

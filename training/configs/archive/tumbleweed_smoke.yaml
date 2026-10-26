@@ -36,7 +36,7 @@ data:
     # curated labeled binders (no count column; unweighted)
     - {name: utexas_strong,  parquet: ~/Desktop/autoRNA_data/tumbleweed/utexas_db/processed/utexas_aptamer_db.parquet, sequence_col: aptamer_sequence_clean, kd_filter_lt_nm: 1000, class: r_late, weight: 2.0}
 
-  test_exclusion_parquet: /Users/m/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/aptamer_splits.parquet
+  test_exclusion_parquet: ~/Tumbleweed/data_refs/aptamer_splits.parquet
   max_len: 128
   shuffle_buffer: 5000
   num_workers: 0

@@ -1883,7 +1883,7 @@ data:
     weight_by_count: true
     count_col: count
   - name: dna_synr0_synthetic_r0_aml_sefah2009
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_aml_sefah2009.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_aml_sefah2009.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1893,7 +1893,7 @@ data:
     library_id: aml_sefah2009
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_ampicillin_song2012
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ampicillin_song2012.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ampicillin_song2012.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1903,7 +1903,7 @@ data:
     library_id: ampicillin_song2012
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_cd20_haghighi2018
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_cd20_haghighi2018.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_cd20_haghighi2018.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1913,7 +1913,7 @@ data:
     library_id: cd20_haghighi2018
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_cea_li2022
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_cea_li2022.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_cea_li2022.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1923,7 +1923,7 @@ data:
     library_id: cea_li2022
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_egfrviii_tan2013
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_egfrviii_tan2013.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_egfrviii_tan2013.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1933,7 +1933,7 @@ data:
     library_id: egfrviii_tan2013
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_fumonisin_mckeague2010
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_fumonisin_mckeague2010.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_fumonisin_mckeague2010.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1943,7 +1943,7 @@ data:
     library_id: fumonisin_mckeague2010
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_gbm_kang2012
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_gbm_kang2012.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_gbm_kang2012.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1953,7 +1953,7 @@ data:
     library_id: gbm_kang2012
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_gtx_lu2020
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_gtx_lu2020.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_gtx_lu2020.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1963,7 +1963,7 @@ data:
     library_id: gtx_lu2020
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_hepg2_jhit_zhang2015
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_hepg2_jhit_zhang2015.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_hepg2_jhit_zhang2015.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1973,7 +1973,7 @@ data:
     library_id: hepg2_jhit_zhang2015
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_her2_liu2012_hb5
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_her2_liu2012_hb5.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_her2_liu2012_hb5.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1983,7 +1983,7 @@ data:
     library_id: her2_liu2012_hb5
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_ifng_liu2014
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ifng_liu2014.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ifng_liu2014.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -1993,7 +1993,7 @@ data:
     library_id: ifng_liu2014
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_ige_wiegand1996_d17
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ige_wiegand1996_d17.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ige_wiegand1996_d17.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2003,7 +2003,7 @@ data:
     library_id: ige_wiegand1996_d17
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_lung_jimenez2012
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_lung_jimenez2012.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_lung_jimenez2012.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2013,7 +2013,7 @@ data:
     library_id: lung_jimenez2012
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_lysozyme_tran2010
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_lysozyme_tran2010.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_lysozyme_tran2010.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2023,7 +2023,7 @@ data:
     library_id: lysozyme_tran2010
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_muc1_hu2012_ma3
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_muc1_hu2012_ma3.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_muc1_hu2012_ma3.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2033,7 +2033,7 @@ data:
     library_id: muc1_hu2012_ma3
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_norovirus_vlp_moore2025
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_norovirus_vlp_moore2025.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_norovirus_vlp_moore2025.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2043,7 +2043,7 @@ data:
     library_id: norovirus_vlp_moore2025
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_nucleolin_as1411_bates2009
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_nucleolin_as1411_bates2009.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_nucleolin_as1411_bates2009.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2053,7 +2053,7 @@ data:
     library_id: nucleolin_as1411_bates2009
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_ota_mckeague2014
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ota_mckeague2014.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ota_mckeague2014.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2063,7 +2063,7 @@ data:
     library_id: ota_mckeague2014
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_ptk7_shangguan2008_sgc8
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ptk7_shangguan2008_sgc8.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_ptk7_shangguan2008_sgc8.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2073,7 +2073,7 @@ data:
     library_id: ptk7_shangguan2008_sgc8
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_sea_oliveira2024
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_sea_oliveira2024.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_sea_oliveira2024.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2083,7 +2083,7 @@ data:
     library_id: sea_oliveira2024
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_td05_mallikaratchy2011
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_td05_mallikaratchy2011.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_td05_mallikaratchy2011.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2093,7 +2093,7 @@ data:
     library_id: td05_mallikaratchy2011
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_tenc_hicke2003
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tenc_hicke2003.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tenc_hicke2003.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2103,7 +2103,7 @@ data:
     library_id: tenc_hicke2003
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_thrombin_classics_hd1_hd22_nu172
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_classics_hd1_hd22_nu172.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_classics_hd1_hd22_nu172.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2113,7 +2113,7 @@ data:
     library_id: thrombin_classics_hd1_hd22_nu172
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_thrombin_dolinnaya2017_8brg
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_dolinnaya2017_8brg.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_dolinnaya2017_8brg.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2123,7 +2123,7 @@ data:
     library_id: thrombin_dolinnaya2017_8brg
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_thrombin_pasternak2011_una
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_pasternak2011_una.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_pasternak2011_una.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2133,7 +2133,7 @@ data:
     library_id: thrombin_pasternak2011_una
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_thrombin_zavyalova2019_mace
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_zavyalova2019_mace.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_thrombin_zavyalova2019_mace.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2143,7 +2143,7 @@ data:
     library_id: thrombin_zavyalova2019_mace
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_tnbc_camorani2021
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tnbc_camorani2021.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tnbc_camorani2021.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2153,7 +2153,7 @@ data:
     library_id: tnbc_camorani2021
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_tnfa_orava2019
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tnfa_orava2019.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_tnfa_orava2019.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2163,7 +2163,7 @@ data:
     library_id: tnfa_orava2019
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_vegf_kaur2012_dna
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_vegf_kaur2012_dna.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_vegf_kaur2012_dna.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2173,7 +2173,7 @@ data:
     library_id: vegf_kaur2012_dna
     weight_by_count: false
   - name: dna_synr0_synthetic_r0_vimentin_zamay2014
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/synthetic_r0_vimentin_zamay2014.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/synthetic_r0_vimentin_zamay2014.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0
@@ -2183,7 +2183,7 @@ data:
     library_id: vimentin_zamay2014
     weight_by_count: false
   - name: generic_dna_r0
-    parquet: ~/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/ood_panels_dna/generic_dna_r0_from_PRJNA615076.parquet
+    parquet: ~/Tumbleweed/data_refs/ood_panels_dna/generic_dna_r0_from_PRJNA615076.parquet
     sequence_col: sequence
     class: r0
     weight: 1.0

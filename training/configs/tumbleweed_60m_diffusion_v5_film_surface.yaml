@@ -46,8 +46,8 @@ data:
     chemistry: RNA
     r_max: 15
 
-  target_embeddings_parquet: /Users/m/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/target_protein_embeddings_surface_centered.parquet
-  winners_parquet: /Users/m/Library/CloudStorage/GoogleDrive-markomelnick@gmail.com/My Drive/scripts/FoundFold/tumbleweed/data_refs/kdbench_winners_hybrid.parquet
+  target_embeddings_parquet: ~/Tumbleweed/data_refs/target_protein_embeddings_surface_centered.parquet
+  winners_parquet: ~/Tumbleweed/data_refs/kdbench_winners_hybrid.parquet
   winner_round: 4
   winner_r_max: 5
   winner_repeat: 50
